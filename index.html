@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html ng-app="actorBattle">
+  <head>
+    <meta charset="utf-8">
+    <title>Actor Battle</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="js/controller.js" charset="utf-8"></script>
+  </head>
+  <body ng-controller="ScreenController as screen">
+    <main ng-show="screen.currentState('selectScreen')">
+      <h1>Screen 1</h1>
+    </main>
+
+    <main ng-show="screent.currentState('inGame')">
+      <h1>Screen 2</h1>
+    </main>
+
+    <main ng-show="screen.currentState('endGame')">
+      <h1>Screen 3</h1>
+    </main>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  </body>
+</html>
