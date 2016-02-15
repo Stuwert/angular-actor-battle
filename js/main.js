@@ -20,5 +20,6 @@ app.controller('ScreenController', function(){
 
 app.controller('GameController', function(){
   this.player1 = {};
-  this.payer2 = {};
+  this.player2 = {};
+  this.turnstatus = "player1"
 })

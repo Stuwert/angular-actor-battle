@@ -4,31 +4,54 @@
     <meta charset="utf-8">
     <title>Actor Battle</title>
     <script src="js/app.js" charset="utf-8"></script>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Raleway' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/app.css" media="screen" title="no title" charset="utf-8">
   </head>
   <body ng-controller="ScreenController as screen">
     <main class="gameStart" ng-show="screen.currentState('selectScreen')">
-      <h4>Actor Battle</h4>
+      <h1>Actor Battle</h1>
         <p>
           Welcome to the devilish game of Actor Battle, where you will pit actors against one another, comparing the popularity of themselves in armed combat (or arrayed combat), to determine who will come away the victor.
         </p>
-        <h5>
+        <p>
           Would you prefer to play Single Player or Multi Player game?
-        </h5>
+        </p>
         <div class="buttonz">
           <button type="button" ng-click="screen.changeState('singlePlayer')">Single Player</button>
           <button type="button" ng-click="screen.changeState('multiPlayer')">Multi Player</button>
         </div>
     </main>
-
-    <main ng-show="screen.currentState('singlePlayer') || screen.currentState('multiPlayer')" ng-controller="GameController as game">
-      <h1>Screen 2</h1>
+    <main class="theGame" ng-show="screen.currentState('singlePlayer') || screen.currentState('multiPlayer')" ng-controller="GameController as game">
+      <h1>Actor Battle</h1>
+      <section>
+        <div class="display">
+          <p class="turnstatus">
+            {{game.turnstatus}}
+          </p>
+          <p>Select actors/actresses for your team:</p>
+        </div>
+        <input type="text" name="name" placeholder="Who will battle with you">
+        <button id="real" type="" name="button">Select</button>
+        <div class="fighters">
+          <div>
+            <h2>Player 1 Champion</h2>
+            <div class="player1"></div>
+          </div>
+          <div>
+            <h2>Player 2 Champion</h2>
+            <div class="player2"></div>
+          </div>
+        </div>
+      </section>
     </main>
-
     <main ng-show="screen.currentState('endGame')">
       <h1>Screen 3</h1>
     </main>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <footer>
+      <p>
+        Thanks to:
+      </p>
+      <img height="40" src="https://assets.tmdb.org/images/logos/var_5_0_tmdb-logo-1Line-GreenGradient-Bree.png" alt="" />
+    </footer>
   </body>
 </html>

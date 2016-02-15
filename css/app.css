@@ -212,9 +212,7 @@ input {
   justify-content: space-around;
   align-items: center;
   z-index: 1; }
-  .gameStart h4, .gameOver h4 {
-    font-size: 100px;
-    text-align: center;
+  .gameStart h1, .gameOver h1 {
     color: white; }
   .gameStart h5, .gameOver h5 {
     text-align: center;

@@ -20,7 +20,9 @@ app.controller('ScreenController', function(){
 })
 
 app.controller('GameController', function(){
-
+  this.player1 = {};
+  this.player2 = {};
+  this.turnstatus = "player1"
 })
 
 },{"angular":7,"angular-dragula":2,"jquery":16}],2:[function(require,module,exports){
