@@ -1,0 +1,26 @@
+{
+  "name": "actor-battle-angular",
+  "version": "1.0.0",
+  "description": "A competitive popularity contest, between actors.",
+  "main": "index.js",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "jquery": "^2.2.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stuwert/angular-actor-battle.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Stuwert/angular-actor-battle/issues"
+  },
+  "homepage": "https://github.com/Stuwert/angular-actor-battle#readme"
+}

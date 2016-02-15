@@ -1,4 +1,9 @@
-var app = angular.module('actorBattle', []);
+var angular = require('angular');
+var $ = require('jquery')
+var angularDragula = require('angular-dragula');
+
+
+var app = angular.module('actorBattle', [angularDragula(angular)]);
 
 app.controller('ScreenController', function(){
   this.gameState = "selectScreen";
@@ -14,5 +19,6 @@ app.controller('ScreenController', function(){
 })
 
 app.controller('GameController', function(){
-  
+  this.player1 = {};
+  this.payer2 = {};
 })
