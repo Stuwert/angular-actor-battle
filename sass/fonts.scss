@@ -1,0 +1,23 @@
+h1, h2, h3, h4, h5, h6{
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+}
+
+h1{
+  font-size: 170px;
+  margin: 0 20px;
+  padding-top: 80px;
+}
+
+p{
+  margin: 80px;
+  font-size: 40px;
+  em{
+    font-weight: bold;
+  }
+}
+
+a, ul, p, input{
+  font-family: 'Raleway', sans-serif;
+  text-align: center;
+}

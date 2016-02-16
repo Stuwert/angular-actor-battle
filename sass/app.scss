@@ -1,0 +1,242 @@
+@import 'reset';
+@import 'buttons';
+@import 'fonts';
+@import 'intro';
+
+*{
+  box-sizing: border-box;
+}
+
+footer{
+  position: fixed;
+  height: 100px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  p{
+    margin: 0 10px;
+    font-size: 50px;
+  }
+  img{
+    height: 80px;
+  }
+}
+
+
+// $div-radius : 15px;
+// $interior-flex: 7vw;
+// $section-flex: 3vw;
+// $active-charmarg: 20px;
+
+//
+// .fourcorners{
+//   top: 0;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+// }
+//
+// .flexed{
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-around;
+//   flex-direction: column;
+// }
+//
+//
+// p{
+//   line-height: 1.5;
+// }
+// h1{
+//   margin-top: 30px;
+//   font-size: 7 * $base-font-size;
+// }
+//
+// h3{
+//   font-size: 4 * $base-font-size;
+// }
+//
+// h4{
+//   color: white;
+//   font-size: 30px;
+//   margin: 0 20px;
+//   text-align: center;
+// }
+//
+// h5{
+//   font-size: 2 * $base-font-size;
+// }
+//
+// body{
+//   background-color: #e5f1e3;
+// }
+//
+// .bench{
+//   .characters{
+//     @extend .flexed;
+//     height: 100vh;
+//     width: 20vw;
+//     div{
+//       width: 150px;
+//       height: 200px;
+//       background-color: #510D51;
+//       border-radius: $div-radius;
+//       @extend .flexed;
+//     }
+//     [class^="attack"]{
+//       display: none;
+//     }
+//     h5{
+//       color: white;
+//     }
+//   }
+// }
+//
+// .fainted{
+//   opacity: .5;
+// }
+//
+// input{
+//   font-size: 24px;
+//   height: 30px;
+//   width: 160px;
+// }
+//
+//
+// .display{
+//   width: 450px;
+//   height: 300px;
+//   background-color: black;
+//   @extend .flexed;
+//   p{
+//    color: green;
+//    text-align: center;
+//    font-size: 30px;
+//    width: 80%;
+//  }
+// }
+//
+
+//
+
+//
+// input{
+//   margin: 30px 0;
+//   height: 40px;
+//   width: 250px;
+//   font-size: 18px;
+// }
+//
+// #next{
+//   position: fixed;
+//   top: 40px;
+//   left: 40px;
+// }
+//
+// .fighters{
+//   display: none;
+//   align-items: center;
+// }
+//
+// [class^='player']{
+//   margin: 10px;
+//   width: 300px;
+//   height: 200px;
+//   border: 2px dashed black;
+//   box-shadow: inset 2px 2px rgba(165, 172, 177, 0.75);
+//   background-color: none;
+//   position: relative;
+//   border-radius: 15px;
+//   img{
+//     float: left;
+//     margin: 10px;
+//   }
+//   h5{
+//     margin-left: 5px;
+//     text-align: left;
+//   }
+// }
+//
+//
+//
+// [class^="attack"] {
+//   @extend .flexed;
+//   flex-direction: row;
+//   margin: 10px;
+//   height: 80px;
+//   position: relative;
+//   bottom: 10px;
+//   left: 10px;
+//   h4{
+//     text-align: left;
+//     position: absolute;
+//     top: 5px;
+//     left: 5px;
+//     font-size: 24px;
+//   }
+//   img{
+//     float: none;
+//   }
+// }
+//
+// .removeBackground{
+//   background: none;
+// }
+//
+// .removeBackground:hover{
+//   background: none;
+// }
+//
+// .offButton, .offButton:hover {
+// background-color : grey;
+// color : dimgrey;
+// box-shadow : none;
+// border: none;
+// }
+//
+//
+//
+//
+// .restartChoice{
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-around;
+//   align-items: center;
+//   button:hover a{
+//     color: #35635b;
+//   }
+//   a{
+//     color: white;
+//     text-decoration: none;
+//   }
+//   a:hover{
+//     color: #35635b;
+//   }
+// }
+//
+// .gameOver *{
+//   z-index: 2;
+// }
+//
+
+//
+// .beginChoice{
+//   @extend .flexed;
+// }
+//
+// .gameStart *{
+//   z-index: 2;
+// }
+//
+// .gu-unselectable{
+//   button{
+//     display: none;
+//   }
+// }
+//
+// .hidden{
+//   display: none;
+// }

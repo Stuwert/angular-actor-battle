@@ -35,109 +35,20 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-.fourcorners, .gameStart, .gameOver, .gameOver::after, .gameStart::after {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0; }
-
-.flexed, .bench .characters, .bench .characters div, .display, [class^="attack"], .beginChoice {
+.buttonz {
   display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-direction: column; }
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Montserrat', sans-serif;
-  text-align: center; }
-
-a, ul, p, input {
-  font-family: 'Raleway', sans-serif;
-  text-align: center; }
-
-p {
-  line-height: 1.5; }
-
-h1 {
-  margin-top: 30px;
-  font-size: 70px; }
-
-h3 {
-  font-size: 40px; }
-
-h4 {
-  color: white;
-  font-size: 30px;
-  margin: 0 20px;
-  text-align: center; }
-
-h5 {
-  font-size: 20px; }
-
-body {
-  background-color: #e5f1e3; }
-
-.background {
-  position: fixed;
-  height: 100vh;
-  width: 100vw;
-  z-index: -1;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row; }
-
-.bench .characters {
-  height: 100vh;
-  width: 20vw; }
-  .bench .characters div {
-    width: 150px;
-    height: 200px;
-    background-color: #510D51;
-    border-radius: 15px; }
-  .bench .characters [class^="attack"] {
-    display: none; }
-  .bench .characters h5 {
-    color: white; }
-
-.fainted {
-  opacity: .5; }
-
-input {
-  font-size: 24px;
-  height: 30px;
-  width: 160px; }
-
-footer {
-  position: fixed;
-  height: 40px;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  background-color: white;
-  display: flex;
+  flex-direction: column;
   align-items: center; }
-  footer p {
-    margin: 0 10px; }
-
-.display {
-  width: 450px;
-  height: 300px;
-  background-color: black; }
-  .display p {
-    color: green;
-    text-align: center;
-    font-size: 30px;
-    width: 80%; }
 
 button {
   margin: 30px;
-  height: 50px;
-  width: 150px;
+  width: 500px;
+  height: 100px;
   background-color: #894389;
-  border-radius: 10px;
+  border-radius: 20px;
   border: none;
   color: white;
-  font-size: 20px;
+  font-size: 50px;
   box-shadow: 2px 2px 1px 1px rgba(165, 172, 177, 0.75); }
 
 button:hover {
@@ -146,114 +57,59 @@ button:hover {
   border: 2px solid #894389;
   color: #894389; }
 
-input {
-  margin: 30px 0;
-  height: 40px;
-  width: 250px;
-  font-size: 18px; }
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+  text-align: center; }
 
-#next {
-  position: fixed;
-  top: 40px;
-  left: 40px; }
+h1 {
+  font-size: 170px;
+  margin: 0 20px;
+  padding-top: 80px; }
 
-.fighters {
-  display: none;
-  align-items: center; }
+p {
+  margin: 80px;
+  font-size: 40px; }
+  p em {
+    font-weight: bold; }
 
-[class^='player'] {
-  margin: 10px;
-  width: 300px;
-  height: 200px;
-  border: 2px dashed black;
-  box-shadow: inset 2px 2px rgba(165, 172, 177, 0.75);
-  background-color: none;
-  position: relative;
-  border-radius: 15px; }
-  [class^='player'] img {
-    float: left;
-    margin: 10px; }
-  [class^='player'] h5 {
-    margin-left: 5px;
-    text-align: left; }
-
-[class^="attack"] {
-  flex-direction: row;
-  margin: 10px;
-  height: 80px;
-  position: relative;
-  bottom: 10px;
-  left: 10px; }
-  [class^="attack"] h4 {
-    text-align: left;
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    font-size: 24px; }
-  [class^="attack"] img {
-    float: none; }
-
-.removeBackground {
-  background: none; }
-
-.removeBackground:hover {
-  background: none; }
-
-.offButton, .offButton:hover {
-  background-color: grey;
-  color: dimgrey;
-  box-shadow: none;
-  border: none; }
+a, ul, p, input {
+  font-family: 'Raleway', sans-serif;
+  text-align: center; }
 
 .gameStart, .gameOver {
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 1; }
-  .gameStart h1, .gameOver h1 {
-    color: white; }
-  .gameStart h5, .gameOver h5 {
-    text-align: center;
-    font-size: 20px;
-    color: white; }
-  .gameStart p, .gameOver p {
-    width: 50%;
-    color: white;
-    margin: 10px;
-    text-align: center; }
-
-.restartChoice {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center; }
-  .restartChoice button:hover a {
-    color: #35635b; }
-  .restartChoice a {
-    color: white;
-    text-decoration: none; }
-  .restartChoice a:hover {
-    color: #35635b; }
-
-.gameOver * {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
   z-index: 2; }
+  .gameStart h1, .gameStart p, .gameOver h1, .gameOver p {
+    color: white;
+    z-index: 3; }
 
 .gameOver::after, .gameStart::after {
   content: '';
   position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   opacity: 0.9;
-  z-index: 1;
+  z-index: -1;
   background-color: #353940; }
 
-.gameStart * {
-  z-index: 2; }
+* {
+  box-sizing: border-box; }
 
-.gu-unselectable button {
-  display: none; }
-
-.hidden {
-  display: none; }
-
-/*# sourceMappingURL=app.css.map */
+footer {
+  position: fixed;
+  height: 100px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: white;
+  display: flex;
+  align-items: center; }
+  footer p {
+    margin: 0 10px;
+    font-size: 50px; }
+  footer img {
+    height: 80px; }

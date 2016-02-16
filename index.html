@@ -8,19 +8,22 @@
     <link rel="stylesheet" href="css/app.css" media="screen" title="no title" charset="utf-8">
   </head>
   <body ng-controller="ScreenController as screen">
+
     <main class="gameStart" ng-show="screen.currentState('selectScreen')">
       <h1>Actor Battle</h1>
         <p>
-          Welcome to the devilish game of Actor Battle, where you will pit actors against one another, comparing the popularity of themselves in armed combat (or arrayed combat), to determine who will come away the victor.
+          {{screen.intro}}
         </p>
         <p>
-          Would you prefer to play Single Player or Multi Player game?
+          {{screen.selectChoice}}
         </p>
         <div class="buttonz">
-          <button type="button" ng-click="screen.changeState('singlePlayer')">Single Player</button>
-          <button type="button" ng-click="screen.changeState('multiPlayer')">Multi Player</button>
+          <button type="button" ng-click="screen.changeState('singlePlayer')">Duke it Out</button>
+          <button type="button" ng-click="screen.changeState('finalFour')">Final Four</button>
+          <button type="button" ng-click="screen.changeState('battleRoyale')">Battle Royale</button>
         </div>
     </main>
+
     <main class="theGame" ng-show="screen.currentState('singlePlayer') || screen.currentState('multiPlayer')" ng-controller="GameController as game">
       <h1>Actor Battle</h1>
       <section>
@@ -44,14 +47,17 @@
         </div>
       </section>
     </main>
+
     <main ng-show="screen.currentState('endGame')">
       <h1>Screen 3</h1>
     </main>
+
     <footer>
       <p>
         Thanks to:
       </p>
       <img height="40" src="https://assets.tmdb.org/images/logos/var_5_0_tmdb-logo-1Line-GreenGradient-Bree.png" alt="" />
     </footer>
+
   </body>
 </html>
