@@ -66,6 +66,14 @@ h1 {
   margin: 0 20px;
   padding-top: 80px; }
 
+h2 {
+  font-size: 110px;
+  margin: 40px 20px; }
+
+h6 {
+  color: white;
+  font-size: 40px; }
+
 p {
   margin: 80px;
   font-size: 40px; }
@@ -95,6 +103,49 @@ a, ul, p, input {
   opacity: 0.9;
   z-index: -1;
   background-color: #353940; }
+
+header {
+  height: 5vh;
+  background-color: grey;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+main {
+  height: 100vh;
+  width: 100vw;
+  position: relative; }
+
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+
+input {
+  width: 65vw;
+  height: 5vh;
+  font-size: 40px; }
+
+[class^='team'] {
+  background-color: black;
+  height: 450px;
+  width: 800px;
+  position: fixed;
+  bottom: 150px; }
+
+.team1 {
+  left: -700px;
+  transition: left 0.75s; }
+
+.team1Show {
+  left: 0; }
+
+.team2 {
+  right: -700px;
+  transition: right 0.75s; }
+
+.team2Show {
+  right: 0; }
 
 * {
   box-sizing: border-box; }

@@ -25,27 +25,20 @@
     </main>
 
     <main class="theGame" ng-show="screen.currentState('singlePlayer') || screen.currentState('multiPlayer')" ng-controller="GameController as game">
-      <h1>Actor Battle</h1>
-      <section>
-        <div class="display">
-          <p class="turnstatus">
-            {{game.turnstatus}}
-          </p>
-          <p>Select actors/actresses for your team:</p>
-        </div>
-        <input type="text" name="name" placeholder="Who will battle with you">
-        <button id="real" type="" name="button">Select</button>
-        <div class="fighters">
-          <div>
-            <h2>Player 1 Champion</h2>
-            <div class="player1"></div>
-          </div>
-          <div>
-            <h2>Player 2 Champion</h2>
-            <div class="player2"></div>
-          </div>
-        </div>
+      <header>
+        <h6>Actor Battle</h6>
+      </header>
+      <section ng-show="game.currentState('teamSelect')">
+        <h2>{{game.turnStatus}} Select</h2>
+        <input type="text" name="name" value="" placeholder='Seth or Meryl?'>
+        <button type="submit"  name="button" >Choose</button>
       </section>
+      <div class="team1" ng-click="game.showHideTeam('team1')" ng-class="game.newClass.team1">
+
+      </div>
+      <div class="team2" ng-click="game.showHideTeam('team2')" ng-class="game.newClass.team2">
+
+      </div>
     </main>
 
     <main ng-show="screen.currentState('endGame')">

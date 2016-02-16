@@ -1,0 +1,51 @@
+header{
+  height: 5vh;
+  background-color: grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main{
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
+
+section{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input{
+  width: 65vw;
+  height: 5vh;
+  font-size: 40px;
+}
+
+[class^='team'] {
+  background-color: black;
+  height: 450px;
+  width: 800px;
+  position: fixed;
+  bottom: 150px;
+}
+
+.team1{
+  left: -700px;
+  transition: left 0.75s;
+}
+
+.team1Show{
+  left: 0;
+}
+
+.team2{
+  right: -700px;
+  transition: right 0.75s;
+}
+
+.team2Show{
+  right: 0;
+}

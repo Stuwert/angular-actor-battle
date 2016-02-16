@@ -17,14 +17,30 @@ app.controller('ScreenController', function(){
   }
   this.changeState = function(newState){
     this.gameState = newState;
-    console.log(this.gameState);
   }
 })
 
 app.controller('GameController', function(){
-  this.player1 = [];
-  this.player2 = [];
-  this.turnstatus = "player1"
+  this.team1 = [];
+  this.team2 = [];
+  this.turnStatus = "team1"
+  this.gameState = 'teamSelect';
+  this.currentState = function(scrn){
+    return scrn === this.gameState;
+  }
+
+
+  this.changeState = function(newState){
+    this.gameState = newState;
+  }
+  this.newClass = {
+    "team1" : '',
+    "team2" : ''
+  }
+  this.showHideTeam = function(team){
+    this.newClass[team] = this.newClass[team] === '' ? team + 'Show' : '';
+  }
+
 })
 
 function newFighter(name, armor, actorpopularity, actorimage, image1, image2, attack1, attack2){
