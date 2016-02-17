@@ -1,6 +1,7 @@
 var angular = require('angular');
 var $ = require('jquery')
 var angularDragula = require('angular-dragula');
+var tmdb = require('./jsoncall');
 
 
 var app = angular.module('actorBattle', [angularDragula(angular)]);
@@ -20,27 +21,63 @@ app.controller('ScreenController', function(){
 })
 
 app.controller('GameController', function(){
+  var that = this;
   this.team1 = [];
   this.team2 = [];
-  this.turnStatus = "team1"
+  this.turnStatus = "team1";
   this.gameState = 'teamSelect';
   this.currentState = function(scrn){
     return scrn === this.gameState;
-  }
+  };
 
+  this.changeTurn = function(){
+    if (this.turnStatus === "team1"){
+      this.turnStatus = 'team2'
+      this.newClass.team1 = ''
+      this.newClass.team2 = 'team2Show'
+    }else{
+      this.turnStatus = 'team1'
+      this.newClass.team2 = ''
+      this.newClass.team1 = 'team1Show'
+    }
+  };
 
   this.changeState = function(newState){
     this.gameState = newState;
-  }
+  };
+
+
+  this.callTest = function(){
+    tmdb.call('/search/person', {query : $('#actor').val()}).then(function(response){
+      that.team1.push(success(response));
+      that.changeTurn();
+    }, function(error){
+      alert('Please try again')
+    })
+  };
+
   this.newClass = {
-    "team1" : '',
+    "team1" : 'team1Show',
     "team2" : ''
-  }
+  };
+
   this.showHideTeam = function(team){
     this.newClass[team] = this.newClass[team] === '' ? team + 'Show' : '';
-  }
+  };
 
 })
+
+
+function success(response){
+  var actor = response["results"][0];
+  var movie0 = actor["known_for"][0];
+  var movie1 = actor["known_for"][1]
+  var actorArmor = 0;
+  actor["known_for"].forEach(function(item){
+    actorArmor += item["vote_average"];
+  })
+  return new newFighter(actor.name, actorArmor, actor.popularity, actor["profile_path"], movie0["poster_path"], movie1["poster_path"], movie0["popularity"], movie1["popularity"]);
+};
 
 function newFighter(name, armor, actorpopularity, actorimage, image1, image2, attack1, attack2){
   this.name = name;
@@ -51,8 +88,4 @@ function newFighter(name, armor, actorpopularity, actorimage, image1, image2, at
   this.img = "http://image.tmdb.org/t/p/w185" + actorimage;
   this.attack1 = {popularity: attack1 * 10, attack: attack1 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image1}
   this.attack2 = {popularity: attack2 * 10, attack: attack2 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image2};
-}
-
-function thisIsATest(){
-  return "Bing Bong"
 }

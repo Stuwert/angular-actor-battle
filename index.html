@@ -30,14 +30,17 @@
       </header>
       <section ng-show="game.currentState('teamSelect')">
         <h2>{{game.turnStatus}} Select</h2>
-        <input type="text" name="name" value="" placeholder='Seth or Meryl?'>
-        <button type="submit"  name="button" >Choose</button>
+        <input id='actor' type="text" name="name" value="" placeholder='Seth or Meryl?'>
+        <button ng-click='game.callTest()' id='actorSelect' type="submit"  name="button" >Choose</button>
       </section>
-      <div class="team1" ng-click="game.showHideTeam('team1')" ng-class="game.newClass.team1">
-
+      <div class="team1" ng-class="game.newClass.team1" >
+        <h3 ng-click="game.showHideTeam('team1')">Team 1</h3>
+        <div ng-repeat='actors in game.team1'>
+          <h5>{{actor.name}}</h1>
+        </div>
       </div>
-      <div class="team2" ng-click="game.showHideTeam('team2')" ng-class="game.newClass.team2">
-
+      <div class="team2" ng-class="game.newClass.team2">
+        <h3 ng-click="game.showHideTeam('team2')">Team 2</h3>
       </div>
     </main>
 

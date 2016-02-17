@@ -16,12 +16,15 @@ section{
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
+  height: 55vh;
 }
 
 input{
   width: 65vw;
   height: 5vh;
   font-size: 40px;
+  border: 2px solid black;
 }
 
 [class^='team'] {
@@ -30,11 +33,22 @@ input{
   width: 800px;
   position: fixed;
   bottom: 150px;
+  h3{
+    position: absolute;
+    color: white;
+    top: 175px;
+  }
 }
 
 .team1{
   left: -700px;
   transition: left 0.75s;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  h3{
+    transform: rotate(90deg);
+    right: -95px;
+  }
 }
 
 .team1Show{
@@ -44,6 +58,12 @@ input{
 .team2{
   right: -700px;
   transition: right 0.75s;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  h3{
+    transform: rotate(-90deg);
+    left: -95px;
+  }
 }
 
 .team2Show{
