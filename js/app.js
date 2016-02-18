@@ -59,49 +59,54 @@ app.controller('ScreenController', function(){
   }
 })
 
-app.controller('GameController', function(){
-  var that = this;
-  this.team1 = [];
-  this.team2 = [];
-  this.turnStatus = "team1";
-  this.gameState = 'teamSelect';
+app.controller('GameController', function($scope){
+  $scope.team1 = [];
+  $scope.team2 = [];
+  $scope.active1 = [];
+  $scope.active2 = [];
+  $scope.turnStatus = "team1";
+  $scope.gameState = 'teamSelect';
+
   this.currentState = function(scrn){
-    return scrn === this.gameState;
+    return scrn === $scope.gameState;
   };
 
-  this.changeTurn = function(){
+  var changeTurn = function(){
     if (this.turnStatus === "team1"){
-      this.turnStatus = 'team2'
-      this.newClass.team1 = ''
-      this.newClass.team2 = 'team2Show'
+      $scope.turnStatus = 'team2'
+      $scope.newClass.team1 = ''
+      $scope.newClass.team2 = 'team2Show'
     }else{
-      this.turnStatus = 'team1'
-      this.newClass.team2 = ''
-      this.newClass.team1 = 'team1Show'
+      $scope.turnStatus = 'team1'
+      $scope.newClass.team2 = ''
+      $scope.newClass.team1 = 'team1Show'
     }
   };
 
   this.changeState = function(newState){
-    this.gameState = newState;
+    $scope.gameState = newState;
   };
 
 
   this.callTest = function(){
-    tmdb.call('/search/person', {query : $('#actor').val()}).then(function(response){
-      that.team1.push(success(response));
-      that.changeTurn();
-    }, function(error){
-      alert('Please try again')
-    })
+      $scope.team1.push({'name' : 'Bing Bong'})
+      console.log($scope.team1);
+    // tmdb.call('/search/person', {query : $('#actor').val()}).then(function(response){
+    //   $scope.team1.push(success(response));
+    //   console.log($scope.team1);
+    //   changeTurn();
+    // }, function(error){
+    //   alert('Please try again')
+    // })
   };
 
-  this.newClass = {
+  $scope.newClass = {
     "team1" : 'team1Show',
     "team2" : ''
   };
 
   this.showHideTeam = function(team){
-    this.newClass[team] = this.newClass[team] === '' ? team + 'Show' : '';
+    $scope.newClass[team] = $scope.newClass[team] === '' ? team + 'Show' : '';
   };
 
 })
