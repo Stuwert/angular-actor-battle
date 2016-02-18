@@ -1,47 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports = {
-		"api_key": "7fb22e55a5bafa415e02fe8d426ad2f9",
-		"base_uri": "https://api.themoviedb.org/3",
-		"images_uri": "http://image.this.org/t/p",
-		"timeout": 5000,
-		call: function(url, params){
-			var that = this;
-			return new Promise(function(resolve, reject){
-				var params_str ="api_key="+that.api_key;
-				for (var key in params) {
-					if (params.hasOwnProperty(key)) {
-						params_str+="&"+key+"="+encodeURIComponent(params[key]);
-					}
-				}
-				var xhr = new XMLHttpRequest();
-				xhr.timeout = that.timeout;
-				xhr.ontimeout = function () {
-					throw("Request timed out: " + url +" "+ params_str);
-				};
-				xhr.open("GET", that.base_uri + url + "?" + params_str, true);
-				xhr.setRequestHeader('Accept', 'application/json');
-				xhr.responseType = "text";
-				xhr.onreadystatechange = function () {
-					if (this.readyState === 4) {
-						if (this.status === 200){
-							resolve(JSON.parse(this.response));
-						}else{
-							reject(JSON.parse(this.response));
-						}
-					}
-				};
-				xhr.send();
-
-		})
-	}
-}
-
-},{}],2:[function(require,module,exports){
 var angular = require('angular');
 var $ = require('jquery')
 var angularDragula = require('angular-dragula');
-var tmdb = require('./jsoncall');
-
 
 var app = angular.module('actorBattle', [angularDragula(angular)]);
 
@@ -59,7 +19,7 @@ app.controller('ScreenController', function(){
   }
 })
 
-app.controller('GameController', function($scope){
+app.controller('GameController', function($scope, $http){
   $scope.team1 = [];
   $scope.team2 = [];
   $scope.active1 = [];
@@ -71,7 +31,7 @@ app.controller('GameController', function($scope){
     return scrn === $scope.gameState;
   };
 
-  var changeTurn = function(){
+  $scope.changeTurn = function(){
     if (this.turnStatus === "team1"){
       $scope.turnStatus = 'team2'
       $scope.newClass.team1 = ''
@@ -89,16 +49,17 @@ app.controller('GameController', function($scope){
 
 
   this.callTest = function(){
-      $scope.team1.push({'name' : 'Bing Bong'})
-      console.log($scope.team1);
-    // tmdb.call('/search/person', {query : $('#actor').val()}).then(function(response){
-    //   $scope.team1.push(success(response));
-    //   console.log($scope.team1);
-    //   changeTurn();
-    // }, function(error){
-    //   alert('Please try again')
-    // })
-  };
+    $http({
+      method: 'GET',
+      url: 'https://api.themoviedb.org/3/search/person?api_key=7fb22e55a5bafa415e02fe8d426ad2f9&query=' + $scope.actor.split(" ").join("+"),
+      dataType: 'jsonp'
+    }).then(function successCallback(response){
+      $scope.team1.push(addActor(response))
+      // $scope.changeTurn();
+    }, function errorCallback(response){
+
+    })
+  }
 
   $scope.newClass = {
     "team1" : 'team1Show',
@@ -112,8 +73,8 @@ app.controller('GameController', function($scope){
 })
 
 
-function success(response){
-  var actor = response["results"][0];
+function addActor(response){
+  var actor = response.data["results"][0];
   var movie0 = actor["known_for"][0];
   var movie1 = actor["known_for"][1]
   var actorArmor = 0;
@@ -134,7 +95,7 @@ function newFighter(name, armor, actorpopularity, actorimage, image1, image2, at
   this.attack2 = {popularity: attack2 * 10, attack: attack2 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image2};
 }
 
-},{"./jsoncall":1,"angular":8,"angular-dragula":3,"jquery":17}],3:[function(require,module,exports){
+},{"angular":7,"angular-dragula":2,"jquery":16}],2:[function(require,module,exports){
 'use strict';
 
 var dragulaService = require('./service');
@@ -151,7 +112,7 @@ function register (angular) {
 
 module.exports = register;
 
-},{"./directive":4,"./service":6}],4:[function(require,module,exports){
+},{"./directive":3,"./service":5}],3:[function(require,module,exports){
 'use strict';
 
 var dragula = require('dragula');
@@ -209,7 +170,7 @@ function register (angular) {
 
 module.exports = register;
 
-},{"dragula":16}],5:[function(require,module,exports){
+},{"dragula":15}],4:[function(require,module,exports){
 'use strict';
 
 var atoa = require('atoa');
@@ -250,7 +211,7 @@ function replicateEvents (angular, bag, scope) {
 
 module.exports = replicateEvents;
 
-},{"atoa":9}],6:[function(require,module,exports){
+},{"atoa":8}],5:[function(require,module,exports){
 'use strict';
 
 var dragula = require('dragula');
@@ -366,7 +327,7 @@ function register (angular) {
 
 module.exports = register;
 
-},{"./replicate-events":5,"dragula":16}],7:[function(require,module,exports){
+},{"./replicate-events":4,"dragula":15}],6:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.0
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -30795,14 +30756,14 @@ $provide.value("$locale", {
 })(window, document);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":7}],9:[function(require,module,exports){
+},{"./angular":6}],8:[function(require,module,exports){
 module.exports = function atoa (a, n) { return Array.prototype.slice.call(a, n); }
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var ticky = require('ticky');
@@ -30814,7 +30775,7 @@ module.exports = function debounce (fn, args, ctx) {
   });
 };
 
-},{"ticky":18}],11:[function(require,module,exports){
+},{"ticky":17}],10:[function(require,module,exports){
 'use strict';
 
 var atoa = require('atoa');
@@ -30870,7 +30831,7 @@ module.exports = function emitter (thing, options) {
   return thing;
 };
 
-},{"./debounce":10,"atoa":9}],12:[function(require,module,exports){
+},{"./debounce":9,"atoa":8}],11:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -30975,7 +30936,7 @@ function find (el, type, fn) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./eventmap":13,"custom-event":14}],13:[function(require,module,exports){
+},{"./eventmap":12,"custom-event":13}],12:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -30992,7 +30953,7 @@ for (eventname in global) {
 module.exports = eventmap;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function (global){
 
 var NativeCustomEvent = global.CustomEvent;
@@ -31044,7 +31005,7 @@ function CustomEvent (type, params) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 var cache = {};
@@ -31079,7 +31040,7 @@ module.exports = {
   rm: rmClass
 };
 
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -31684,7 +31645,7 @@ function getCoord (coord, e) {
 module.exports = dragula;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./classes":15,"contra/emitter":11,"crossvent":12}],17:[function(require,module,exports){
+},{"./classes":14,"contra/emitter":10,"crossvent":11}],16:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.2.0
  * http://jquery.com/
@@ -41517,7 +41478,7 @@ if ( !noGlobal ) {
 return jQuery;
 }));
 
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var si = typeof setImmediate === 'function', tick;
 if (si) {
   tick = function (fn) { setImmediate(fn); };
@@ -41526,4 +41487,4 @@ if (si) {
 }
 
 module.exports = tick;
-},{}]},{},[2]);
+},{}]},{},[1]);

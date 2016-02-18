@@ -30,42 +30,66 @@ input{
 [class^='team'] {
   background-color: black;
   height: 450px;
-  width: 800px;
+  min-width: 900px;
   position: fixed;
   bottom: 150px;
+  overflow-x: scroll;
+  overflow-y: none;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  align-items: center;
+  div{
+    height: 90%;
+    width: 350px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 15px;
+    h5{
+      margin-top: 10px;
+    }
+  }
   h3{
     position: absolute;
     color: white;
-    top: 175px;
+    top: 185px;
+    width: 450px;
+    background-color: black;
   }
 }
 
 .team1{
-  left: -700px;
-  transition: left 0.75s;
+  right: 850px;
+  transition: right 0.75s;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
+  padding-right: 100px;
   h3{
     transform: rotate(90deg);
-    right: -95px;
+    right: -165px;
+    margin: 0;
   }
 }
 
 .team1Show{
-  left: 0;
+  right: 150px;
 }
 
 .team2{
-  right: -700px;
-  transition: right 0.75s;
+  left: 850px;
+  transition: left 0.75s;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
+  flex-direction: row;
   h3{
     transform: rotate(-90deg);
-    left: -95px;
+    left: -165px;
   }
 }
 
 .team2Show{
-  right: 0;
+  left: 150px;
 }

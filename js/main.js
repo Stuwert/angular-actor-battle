@@ -1,8 +1,6 @@
 var angular = require('angular');
 var $ = require('jquery')
 var angularDragula = require('angular-dragula');
-var tmdb = require('./jsoncall');
-
 
 var app = angular.module('actorBattle', [angularDragula(angular)]);
 
@@ -20,7 +18,7 @@ app.controller('ScreenController', function(){
   }
 })
 
-app.controller('GameController', function($scope){
+app.controller('GameController', function($scope, $http){
   $scope.team1 = [];
   $scope.team2 = [];
   $scope.active1 = [];
@@ -32,7 +30,7 @@ app.controller('GameController', function($scope){
     return scrn === $scope.gameState;
   };
 
-  var changeTurn = function(){
+  $scope.changeTurn = function(){
     if (this.turnStatus === "team1"){
       $scope.turnStatus = 'team2'
       $scope.newClass.team1 = ''
@@ -50,16 +48,17 @@ app.controller('GameController', function($scope){
 
 
   this.callTest = function(){
-      $scope.team1.push({'name' : 'Bing Bong'})
-      console.log($scope.team1);
-    // tmdb.call('/search/person', {query : $('#actor').val()}).then(function(response){
-    //   $scope.team1.push(success(response));
-    //   console.log($scope.team1);
-    //   changeTurn();
-    // }, function(error){
-    //   alert('Please try again')
-    // })
-  };
+    $http({
+      method: 'GET',
+      url: 'https://api.themoviedb.org/3/search/person?api_key=7fb22e55a5bafa415e02fe8d426ad2f9&query=' + $scope.actor.split(" ").join("+"),
+      dataType: 'jsonp'
+    }).then(function successCallback(response){
+      $scope.team1.push(addActor(response))
+      // $scope.changeTurn();
+    }, function errorCallback(response){
+
+    })
+  }
 
   $scope.newClass = {
     "team1" : 'team1Show',
@@ -73,8 +72,8 @@ app.controller('GameController', function($scope){
 })
 
 
-function success(response){
-  var actor = response["results"][0];
+function addActor(response){
+  var actor = response.data["results"][0];
   var movie0 = actor["known_for"][0];
   var movie1 = actor["known_for"][1]
   var actorArmor = 0;

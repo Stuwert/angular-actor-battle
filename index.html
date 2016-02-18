@@ -30,13 +30,14 @@
       </header>
       <section ng-show="game.currentState('teamSelect')">
         <h2>{{turnStatus}} Select</h2>
-        <input id='actor' type="text" name="name" value="" placeholder='Seth or Meryl?'>
-        <button ng-click='game.callTest()' id='actorSelect' type="submit"  name="button" >Choose</button>
+        <input ng-model='actor' type="text" name="name" value="" placeholder='Seth or Meryl?'>
+        <button ng-click='game.callTest()' type="submit"  name="button" >Choose</button>
       </section>
       <div class="team1" ng-class="newClass.team1" >
         <h3 ng-click="game.showHideTeam('team1')">Team 1</h3>
-        <div ng-repeat='actors in team1'>
+        <div ng-repeat='actor in team1'>
           <h5>{{actor.name}}</h1>
+          <img src="{{actor.img}}" alt="" />
         </div>
       </div>
       <div class="team2" ng-class="newClass.team2">
