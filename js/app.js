@@ -10,20 +10,41 @@ app.controller('ScreenController', function(){
   this.gameType = "";
   this.selectChoice = "How would you like to battle today?"
   this.intro = "Welcome to Actor Battle, the game where you get to answer life-long questions like 'Could Meryl Streep take on Seth Rogan?' Just select your favorite actors/actresses, throw them in the ring, and see who wins!"
+  this.player1length = null;
+  this.player2length = null;
 
+  //Controls which screen is currently viewable.
   this.currentState = function(scrn){
     return scrn === this.gameState;
   }
+  //changes the viewable screen
   this.changeState = function(newState){
+    if (newState !== 'endGame'){
+      this.player1length = 1;
+      this.player2length = 1;
+    }
     this.gameState = newState;
   }
-})
+}).service
 
 app.controller('GameController', function($scope, $http){
-  $scope.team1 = [];
-  $scope.team2 = [];
+  //Game object for team 1
+  $scope.team1 = {
+    container: [],
+    length: $scope.$parent.player1length,
+    current: true
+  };
+  //Game object for team 2.
+  $scope.team2 = {
+    container: [],
+    length: $scope.$parent.player2length,
+    current: false
+  };
+  //Controls which player is active.
   $scope.active1 = [];
   $scope.active2 = [];
+
+  // General turn status and game State.
   $scope.turnStatus = "team1";
   $scope.gameState = 'teamSelect';
 
@@ -31,17 +52,6 @@ app.controller('GameController', function($scope, $http){
     return scrn === $scope.gameState;
   };
 
-  $scope.changeTurn = function(){
-    if (this.turnStatus === "team1"){
-      $scope.turnStatus = 'team2'
-      $scope.newClass.team1 = ''
-      $scope.newClass.team2 = 'team2Show'
-    }else{
-      $scope.turnStatus = 'team1'
-      $scope.newClass.team2 = ''
-      $scope.newClass.team1 = 'team1Show'
-    }
-  };
 
   this.changeState = function(newState){
     $scope.gameState = newState;
@@ -61,12 +71,29 @@ app.controller('GameController', function($scope, $http){
     })
   }
 
-  $scope.newClass = {
-    "team1" : 'team1Show',
-    "team2" : ''
-  };
+  $scope.returnClass = function(team){
+    if ($scope[team].current){
+      return team + "Show";
+    }else{
+      return null;
+    }
+  }
 
-  this.showHideTeam = function(team){
+  $scope.changeCurrentTeam = function(num){
+    if($scope["team" + num].current){
+      $scope["team" + num].current = false;
+    }else{
+      if (num === 1){
+        $scope["team" + 2].current = false;
+      }else{
+        $scope["team" + 1].current = false;
+        console.log("This is hitting");
+      }
+      $scope["team" + num].current = true;
+    }
+  }
+
+  this.changeCurrentTeam = function(team){
     $scope.newClass[team] = $scope.newClass[team] === '' ? team + 'Show' : '';
   };
 
