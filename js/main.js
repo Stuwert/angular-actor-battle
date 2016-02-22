@@ -47,6 +47,8 @@ app.controller('GameController', function($scope, $http){
   $scope.turnStatus = "team1";
   $scope.gameState = 'teamSelect';
 
+  $scope.showSelect = "Team 1 Select"
+
   this.currentState = function(scrn){
     return scrn === $scope.gameState;
   };
@@ -63,7 +65,8 @@ app.controller('GameController', function($scope, $http){
       url: 'https://api.themoviedb.org/3/search/person?api_key=7fb22e55a5bafa415e02fe8d426ad2f9&query=' + $scope.actor.split(" ").join("+"),
       dataType: 'jsonp'
     }).then(function successCallback(response){
-      $scope.team1.push(addActor(response))
+      $scope.team1.container.push(addActor(response))
+      $scope.actor = null;
       // $scope.changeTurn();
     }, function errorCallback(response){
 
@@ -81,12 +84,14 @@ app.controller('GameController', function($scope, $http){
   $scope.changeCurrentTeam = function(num){
     if($scope["team" + num].current){
       $scope["team" + num].current = false;
+      $scope.showSelect = "Please Pick a Team"
     }else{
       if (num === 1){
         $scope["team" + 2].current = false;
+        $scope.showSelect = "Team 1 Select"
       }else{
         $scope["team" + 1].current = false;
-        console.log("This is hitting");
+        $scope.showSelect = "Team 2 Select"
       }
       $scope["team" + num].current = true;
     }
