@@ -1,8 +1,7 @@
 var angular = require('angular');
-var $ = require('jquery')
 var angularDragula = require('angular-dragula');
 
-var app = angular.module('actorBattle', [angularDragula(angular)]);
+var app = angular.module('actorBattle', [angularDragula(angular), require('angular-route')]);
 
 app.controller('ScreenController', function(){
   this.gameState = "selectScreen";
@@ -24,7 +23,23 @@ app.controller('ScreenController', function(){
     }
     this.gameState = newState;
   }
-}).service
+})
+
+app.config(function($routeProvider){
+  $routeProvider
+    .when('/game/:gametype', {
+      templateUrl: 'partials/game.html',
+      controller: 'GameController'
+    })
+    .when('/end', {
+      templateUrl: 'partials/end.html',
+      controller: 'EndController'
+    })
+    .otherwise({
+      templateUrl: 'partials/start.html',
+      controller: 'ScreenController'
+    })
+})
 
 app.controller('GameController', function($scope, $http){
   //Game object for team 1

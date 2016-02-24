@@ -4,6 +4,9 @@
   "description": "A competitive popularity contest, between actors.",
   "main": "index.js",
   "dependencies": {
+    "angular": "^1.5.0",
+    "angular-dragula": "^1.2.4",
+    "angular-route": "^1.5.0",
     "gulp": "^3.9.1",
     "jquery": "^2.2.0"
   },

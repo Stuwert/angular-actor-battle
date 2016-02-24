@@ -8,51 +8,7 @@
     <link rel="stylesheet" href="css/app.css" media="screen" title="no title" charset="utf-8">
   </head>
   <body ng-controller="ScreenController as screen">
-
-    <main class="gameStart" ng-show="screen.currentState('selectScreen')">
-      <h1>Actor Battle</h1>
-        <p>
-          {{screen.intro}}
-        </p>
-        <p>
-          {{screen.selectChoice}}
-        </p>
-        <div class="buttonz">
-          <button type="button" ng-click="screen.changeState('singlePlayer')">Duke it Out</button>
-          <button type="button" ng-click="screen.changeState('finalFour')">Final Four</button>
-          <button type="button" ng-click="screen.changeState('battleRoyale')">Battle Royale</button>
-        </div>
-    </main>
-
-    <main class="theGame" ng-show="screen.currentState('singlePlayer') || screen.currentState('multiPlayer')" ng-controller="GameController as game">
-      <header>
-        <h6>Actor Battle</h6>
-      </header>
-      <section ng-show="game.currentState('teamSelect')">
-        <h2>{{showSelect}}</h2>
-        <input ng-model='actor' type="text" name="name" value="" placeholder='Seth or Meryl?'>
-        <button ng-click='game.callTest()' type="submit"  name="button" >Choose</button>
-      </section>
-      <div class="team1" ng-class="returnClass('team1')" >
-        <h3 ng-click="changeCurrentTeam(1)">Team 1</h3>
-        <div ng-repeat='actor in team1.container'>
-          <h5>{{actor.name}}</h1>
-          <img src="{{actor.img}}" alt="" />
-        </div>
-      </div>
-      <div class="team2" ng-class="returnClass('team2')">
-        <h3 ng-click="changeCurrentTeam(2)">Team 2</h3>
-        <div ng-repeat='actor in team2.container'>
-          <h5>{{actor.name}}</h1>
-          <img src="{{actor.img}}" alt="" />
-        </div>
-      </div>
-    </main>
-
-    <main ng-show="screen.currentState('endGame')">
-      <h1>Screen 3</h1>
-    </main>
-
+    <div ng-view></div>
     <footer>
       <p>
         Thanks to:

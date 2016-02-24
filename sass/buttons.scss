@@ -16,6 +16,10 @@ button{
   color: white;
   font-size: 50px;
   box-shadow: 2px 2px 1px 1px rgba(165, 172, 177, 0.75);
+  a{
+    text-decoration: none;
+    color: white;
+  }
 }
 
 button:hover{
