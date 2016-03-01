@@ -42,7 +42,7 @@ app.config(function($routeProvider){
 })
 
 app.controller('GameController', function($scope, $http, $routeParams){
-  $scope.actor;
+  $scope.currentTeam = 'team1';
   //Game object for team 1
   $scope.team1 = {
     container: [],
@@ -52,7 +52,7 @@ app.controller('GameController', function($scope, $http, $routeParams){
   //Game object for team 2.
   $scope.team2 = {
     container: [],
-    teamSize: +$routeParams.gametype.split("on")[2],
+    teamSize: +$routeParams.gametype.split("on")[1],
     current: false
   };
 
@@ -65,25 +65,12 @@ app.controller('GameController', function($scope, $http, $routeParams){
   $scope.gameState = 'teamSelect';
 
   $scope.teamsFull = function(){
-    return $scope.team1.container.length === $scope.team1.teamSize && $scope.team2.container.length === $scope.team2.size ? true : false;
+    return $scope.team1.container.length === $scope.team1.teamSize && $scope.team2.container.length === $scope.team2.teamSize ? true : false;
   }
 
   //Returns if the current team selecting is full
   $scope.canAddMembers = function(){
-    if ($scope.team1.current){
-      console.log("Bing Bong");
-      if ($scope.team1.container.length === $scope.team1.teamSize){
-        return false;
-      }else{
-        return true;
-      }
-    }else{
-      if ($scope.team2.container.length === $scope.team2.teamSize){
-        return false;
-      }else{
-        return true;
-      }
-    }
+    return $scope[$scope.currentTeam].container.length !== $scope[$scope.currentTeam].teamSize;
   }
 
   $scope.returnScreen = function(){
@@ -112,7 +99,7 @@ app.controller('GameController', function($scope, $http, $routeParams){
       url: 'https://api.themoviedb.org/3/search/person?api_key=7fb22e55a5bafa415e02fe8d426ad2f9&query=' + $scope.actor.split(" ").join("+"),
       dataType: 'jsonp'
     }).then(function successCallback(response){
-      $scope.team1.container.push(addActor(response))
+      $scope[$scope.currentTeam].container.push(addActor(response))
       $scope.actor = null;
     }, function errorCallback(response){
 
@@ -135,9 +122,11 @@ app.controller('GameController', function($scope, $http, $routeParams){
       if (num === 1){
         $scope["team" + 2].current = false;
         $scope.showSelect = "Team 1 Select"
+        $scope.currentTeam = 'team1'
       }else{
         $scope["team" + 1].current = false;
         $scope.showSelect = "Team 2 Select"
+        $scope.currentTeam = 'team2'
       }
       $scope["team" + num].current = true;
     }
