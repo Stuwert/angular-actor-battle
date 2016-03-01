@@ -1,5 +1,6 @@
 <section>
-  <h2>{{turnStatus}} Select</h2>
-  <input ng-model='actor' placeholder='Seth or Meryl?'>
-  <button ng-click='game.callTest()' name="button">Choose</button>
+  <h2>{{showSelect}}</h2>
+  <input type='text' ng-show='!teamsFull()' ng-disabled='!canAddMembers()' ng-model='$parent.actor' placeholder='Seth or Meryl?'>
+  <button ng-disabled='!canAddMembers()' name="button" ng-click="findActor()">Choose</button>
+  <button ng-show='teamsFull()' ng-click='changeState("fighterSelect")'>Ready to Fight!</button>
 </section>

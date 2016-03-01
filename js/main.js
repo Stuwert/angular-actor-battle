@@ -42,20 +42,20 @@ app.config(function($routeProvider){
 })
 
 app.controller('GameController', function($scope, $http, $routeParams){
+  $scope.actor;
   //Game object for team 1
   $scope.team1 = {
     container: [],
-    length: +$routeParams.gametype.split("on")[0],
+    teamSize: +$routeParams.gametype.split("on")[0],
     current: true
   };
   //Game object for team 2.
   $scope.team2 = {
     container: [],
-    length: +$routeParams.gametype.split("on")[2],
+    teamSize: +$routeParams.gametype.split("on")[2],
     current: false
   };
 
-  console.log($scope.team1);
   //Controls which player is active.
   $scope.active1 = [];
   $scope.active2 = [];
@@ -63,6 +63,28 @@ app.controller('GameController', function($scope, $http, $routeParams){
   // General turn status and game State.
   $scope.turnStatus = "team1";
   $scope.gameState = 'teamSelect';
+
+  $scope.teamsFull = function(){
+    return $scope.team1.container.length === $scope.team1.teamSize && $scope.team2.container.length === $scope.team2.size ? true : false;
+  }
+
+  //Returns if the current team selecting is full
+  $scope.canAddMembers = function(){
+    if ($scope.team1.current){
+      console.log("Bing Bong");
+      if ($scope.team1.container.length === $scope.team1.teamSize){
+        return false;
+      }else{
+        return true;
+      }
+    }else{
+      if ($scope.team2.container.length === $scope.team2.teamSize){
+        return false;
+      }else{
+        return true;
+      }
+    }
+  }
 
   $scope.returnScreen = function(){
     var obj = {
@@ -84,8 +106,7 @@ app.controller('GameController', function($scope, $http, $routeParams){
     $scope.gameState = newState;
   };
 
-
-  this.callTest = function(){
+  $scope.findActor = function(){
     $http({
       method: 'GET',
       url: 'https://api.themoviedb.org/3/search/person?api_key=7fb22e55a5bafa415e02fe8d426ad2f9&query=' + $scope.actor.split(" ").join("+"),
@@ -93,7 +114,6 @@ app.controller('GameController', function($scope, $http, $routeParams){
     }).then(function successCallback(response){
       $scope.team1.container.push(addActor(response))
       $scope.actor = null;
-      // $scope.changeTurn();
     }, function errorCallback(response){
 
     })
