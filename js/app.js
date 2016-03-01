@@ -42,19 +42,21 @@ app.config(function($routeProvider){
     })
 })
 
-app.controller('GameController', function($scope, $http){
+app.controller('GameController', function($scope, $http, $routeParams){
   //Game object for team 1
   $scope.team1 = {
     container: [],
-    length: $scope.$parent.player1length,
+    length: +$routeParams.gametype.split("on")[0],
     current: true
   };
   //Game object for team 2.
   $scope.team2 = {
     container: [],
-    length: $scope.$parent.player2length,
+    length: +$routeParams.gametype.split("on")[2],
     current: false
   };
+
+  console.log($scope.team1);
   //Controls which player is active.
   $scope.active1 = [];
   $scope.active2 = [];
@@ -62,6 +64,15 @@ app.controller('GameController', function($scope, $http){
   // General turn status and game State.
   $scope.turnStatus = "team1";
   $scope.gameState = 'teamSelect';
+
+  $scope.returnScreen = function(){
+    var obj = {
+      'teamSelect' : 'partials/game/characterselect.html',
+      'fighterSelect' : 'partials/game/fighterselect.html',
+      'attackSelect' : 'partials/game/attackselect.html'
+    }
+    return obj[$scope.gameState];
+  }
 
   $scope.showSelect = "Team 1 Select"
 

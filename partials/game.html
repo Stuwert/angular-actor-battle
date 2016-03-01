@@ -2,10 +2,8 @@
   <header>
     <h6>Actor Battle</h6>
   </header>
-  <section ng-show="game.currentState('teamSelect')">
-    <h2>{{showSelect}}</h2>
-    <input ng-model='actor' type="text" name="name" value="" placeholder='Seth or Meryl?'>
-    <button ng-click='game.callTest()' type="submit"  name="button" >Choose</button>
+  <section ng-include="returnScreen()">
+
   </section>
   <div class="team1" ng-class="returnClass('team1')" >
     <h3 ng-click="changeCurrentTeam(1)">Team 1</h3>
