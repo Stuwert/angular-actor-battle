@@ -35,6 +35,28 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: .8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80); }
+
+.gu-hide {
+  display: none !important; }
+
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important; }
+
+.gu-transit {
+  opacity: .2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20); }
+
 .buttonz {
   display: flex;
   flex-direction: column;
@@ -173,7 +195,8 @@ input {
   transition: right 0.75s;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
-  padding-right: 100px; }
+  padding-right: 100px;
+  z-index: 10; }
   .team1 h3 {
     transform: rotate(90deg);
     right: -165px;
@@ -187,7 +210,8 @@ input {
   transition: left 0.75s;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
-  flex-direction: row; }
+  flex-direction: row;
+  z-index: 10; }
   .team2 h3 {
     transform: rotate(-90deg);
     left: -165px; }

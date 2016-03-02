@@ -1,22 +1,22 @@
-<main class="theGame">
+<main class="theGame wrapper">
   <header>
     <h6>Actor Battle</h6>
   </header>
   <section ng-include="returnScreen()">
 
   </section>
-  <div class="team1" ng-class="returnClass('team1')" >
+  <div class="team1 container" ng-class="returnClass('team1')" dragula='"bag"' dragula-model='team1.container'>
     <h3 ng-click="changeCurrentTeam(1)">Team 1</h3>
     <div ng-repeat='actor in team1.container'>
-      <h5>{{actor.name}}</h1>
-      <img src="{{actor.img}}" alt="" />
+      <h5 ng-bind='actor.name'>{{actor.name}}</h5>
+      <img ng-bind='actor.img' src="{{actor.img}}" alt="" />
     </div>
   </div>
-  <div class="team2" ng-class="returnClass('team2')">
+  <div class="team2 container" ng-class="returnClass('team2')" dragula='"bag"' dragula-model='team2.container' >
     <h3 ng-click="changeCurrentTeam(2)">Team 2</h3>
-    <div ng-repeat='actor in team2.container'>
-      <h5>{{actor.name}}</h1>
-      <img src="{{actor.img}}" alt="" />
+    <div ng-repeat='actor in team2.container' >
+      <h5 >{{actor.name}}</h5>
+      <img  src="{{actor.img}}" alt="" />
     </div>
   </div>
 </main>

@@ -41,8 +41,12 @@ app.config(function($routeProvider){
     })
 })
 
-app.controller('GameController', function($scope, $http, $routeParams){
+app.controller('GameController', function($scope, $http, $routeParams, dragulaService){
+  // Sets and stores current team.
   $scope.currentTeam = 'team1';
+
+
+
   //Game object for team 1
   $scope.team1 = {
     container: [],
@@ -82,6 +86,10 @@ app.controller('GameController', function($scope, $http, $routeParams){
     return obj[$scope.gameState];
   }
 
+  $scope.changeState = function(newState){
+    $scope.gameState = newState;
+  }
+
   $scope.showSelect = "Team 1 Select"
 
   this.currentState = function(scrn){
@@ -102,7 +110,7 @@ app.controller('GameController', function($scope, $http, $routeParams){
       $scope[$scope.currentTeam].container.push(addActor(response))
       $scope.actor = null;
     }, function errorCallback(response){
-
+      alert('Bing Bong')
     })
   }
 
@@ -115,6 +123,8 @@ app.controller('GameController', function($scope, $http, $routeParams){
   }
 
   $scope.changeCurrentTeam = function(num){
+    console.log($scope.team1);
+    console.log($scope.team2);
     if($scope["team" + num].current){
       $scope["team" + num].current = false;
       $scope.showSelect = "Please Pick a Team"

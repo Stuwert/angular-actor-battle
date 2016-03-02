@@ -67,6 +67,7 @@ input{
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
   padding-right: 100px;
+  z-index: 10;
   h3{
     transform: rotate(90deg);
     right: -165px;
@@ -84,6 +85,7 @@ input{
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
   flex-direction: row;
+  z-index: 10;
   h3{
     transform: rotate(-90deg);
     left: -165px;
