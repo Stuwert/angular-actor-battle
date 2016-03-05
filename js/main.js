@@ -72,6 +72,8 @@ app.controller('GameController', function($scope, $http, $routeParams, dragulaSe
     return $scope.team1.container.length === $scope.team1.teamSize && $scope.team2.container.length === $scope.team2.teamSize ? true : false;
   }
 
+
+
   //Returns if the current team selecting is full
   $scope.canAddMembers = function(){
     return $scope[$scope.currentTeam].container.length !== $scope[$scope.currentTeam].teamSize;
@@ -145,6 +147,16 @@ app.controller('GameController', function($scope, $http, $routeParams, dragulaSe
   this.changeCurrentTeam = function(team){
     $scope.newClass[team] = $scope.newClass[team] === '' ? team + 'Show' : '';
   };
+
+  $scope.$on('bag.cancel', function(e, el){
+    var theirTeam = el[0].parentNode.id;
+    var theirIndex = el.scope().index;
+    if(confirm("Would you like to delete this element?")){
+      $scope.$apply($scope[theirTeam].container.splice(theirIndex, 1));
+      console.log($scope[theirTeam].container);
+    }
+
+  })
 
 })
 
