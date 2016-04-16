@@ -1,7 +1,9 @@
-<div class="fighter container" id="player1" dragula='"bag-one"' dragula-model='"active1"' dragula-scope="$parent">
-  <div ng-repeat="actor in active1" ng-bind="actor" ></div>
+<div class="fighter container" id="player1" dragula='"bag-one"'  >
+  <div ng-repeat="actor in active1" dragula-model='"active1"' ></div>
 </div>
 <button>Fight!</button>
-<div class="fighter container" id="player2" dragula='"bag-two"' dragula-model='"active2"' dragula-scope="$parent">
-  <div ng-repeat="actor in active2" ng-bind="actor"></div>
+<div class="fighter container" id="player2" dragula='"bag-two"'  >
+  <div ng-repeat="actor in active2" dragula-model='"active2"' ></div>
 </div>
+
+<ng-include src='"partials/extra/playerbenches.html"' ng-controller="BenchController" />

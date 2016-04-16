@@ -25,6 +25,8 @@ module.exports = function($scope, benchService, activeService, screenService, dr
 
   })
 
+
+
 }
 
 },{}],2:[function(require,module,exports){
@@ -79,8 +81,27 @@ module.exports = function(){
 }
 
 },{}],4:[function(require,module,exports){
-arguments[4][3][0].apply(exports,arguments)
-},{"dup":3}],5:[function(require,module,exports){
+module.exports = function($scope, dragulaService, benchService, fighterService){
+
+  dragulaService.options($scope, 'bag-one', {
+      copy: true
+    });
+
+  dragulaService.options($scope, 'bag-two', {
+      copy: true
+    });
+
+  $scope.$on('bag-one.drop', function(e, el){
+    fighterService.setPlayer1Fighter(benchService.returnBenchPlayer1(el[0].childNodes[1].innerHTML));
+    console.log(fighterService.player1Fighter);
+  })
+  $scope.$on('bag-two.drop', function(e, el){
+    fighterService.setPlayer2Fighter(benchService.returnBenchPlayer2(el[0].childNodes[1].innerHTML));
+    console.log(fighterService.player2Fighter);
+  })
+}
+
+},{}],5:[function(require,module,exports){
 arguments[4][3][0].apply(exports,arguments)
 },{"dup":3}],6:[function(require,module,exports){
 arguments[4][3][0].apply(exports,arguments)
@@ -183,8 +204,8 @@ module.exports = function(){
     return that.player1Bench.length;
   }
 
-  this.characterFaintsPlayer1 = function(index){
-    player1Fainted.push(that.player1Bench.splice(index, 1))
+  this.characterFaintsPlayer1 = function(name){
+    player1Fainted.push(returnCharacterIndexPlayer1(name), 1)
   }
 
   this.returnBenchPlayer2 = function(){
@@ -227,8 +248,8 @@ module.exports = function(){
     that.player2Bench.splice(returnCharacterIndexPlayer2(name), 1)
   }
 
-  this.characterFaintsPlayer2 = function(index){
-    player2Fainted.push(that.player2Bench.splice(index, 1))
+  this.characterFaintsPlayer2 = function(name){
+    player2Fainted.push(returnCharacterIndexPlayer2(name), 1)
   }
 
   this.player1BenchIsFull = function(){
@@ -239,12 +260,32 @@ module.exports = function(){
     return that.player2Bench.length >= player2MaxSize
   }
 
+  this.returnplayer1Character = function(name){
+    return that.player1Bench[returnCharacterIndexPlayer1(name)]
+  }
+
+  this.returnplayer2Character = function(name){
+    return that.player2Bench[returnCharacterIndexPlayer1(name)]
+  }
 
 }
 
 },{}],11:[function(require,module,exports){
 module.exports = function(){
-  
+  this.player1Fighter;
+  this.player2Fighter;
+  var that = this;
+
+  this.setPlayer1Fighter = function(char){
+    this.player1Fighter = char;
+  }
+  this.setPlayer2Fighter = function(char){
+    this.player2Fighter = char;
+  }
+
+  //fxn to check if there are two fighters
+  // add player1 attack info
+  // add fight calculation
 }
 
 },{}],12:[function(require,module,exports){
@@ -266,7 +307,7 @@ app
   .service('benchService', require('./benchService'))
   .service('activeService', require('./activeService'))
   .service('screenService', require('./screenService'))
-  .service('fighterSerivce', require('./fighterService'))
+  .service('fighterService', require('./fighterService'))
 
 },{"./activeService":9,"./benchService":10,"./fighterService":11,"./httpService":12,"./screenService":14,"angular":22}],14:[function(require,module,exports){
 module.exports = function($location){

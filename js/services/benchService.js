@@ -26,8 +26,8 @@ module.exports = function(){
     return that.player1Bench.length;
   }
 
-  this.characterFaintsPlayer1 = function(index){
-    player1Fainted.push(that.player1Bench.splice(index, 1))
+  this.characterFaintsPlayer1 = function(name){
+    player1Fainted.push(returnCharacterIndexPlayer1(name), 1)
   }
 
   this.returnBenchPlayer2 = function(){
@@ -70,8 +70,8 @@ module.exports = function(){
     that.player2Bench.splice(returnCharacterIndexPlayer2(name), 1)
   }
 
-  this.characterFaintsPlayer2 = function(index){
-    player2Fainted.push(that.player2Bench.splice(index, 1))
+  this.characterFaintsPlayer2 = function(name){
+    player2Fainted.push(returnCharacterIndexPlayer2(name), 1)
   }
 
   this.player1BenchIsFull = function(){
@@ -82,5 +82,12 @@ module.exports = function(){
     return that.player2Bench.length >= player2MaxSize
   }
 
+  this.returnplayer1Character = function(name){
+    return that.player1Bench[returnCharacterIndexPlayer1(name)]
+  }
+
+  this.returnplayer2Character = function(name){
+    return that.player2Bench[returnCharacterIndexPlayer1(name)]
+  }
 
 }
