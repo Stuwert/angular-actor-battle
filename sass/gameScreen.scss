@@ -27,7 +27,7 @@ input{
   border: 2px solid black;
 }
 
-[class^='team'] {
+[class^='player'] {
   background-color: black;
   height: 450px;
   min-width: 900px;
@@ -61,7 +61,7 @@ input{
   }
 }
 
-.team1{
+.player1{
   right: 850px;
   transition: right 0.75s;
   border-top-right-radius: 15px;
@@ -75,11 +75,11 @@ input{
   }
 }
 
-.team1Show{
+.player1Show{
   right: 150px;
 }
 
-.team2{
+.player2{
   left: 850px;
   transition: left 0.75s;
   border-top-left-radius: 15px;
@@ -92,6 +92,14 @@ input{
   }
 }
 
-.team2Show{
+.player2Show{
   left: 150px;
+}
+
+.fighter{
+  width: 95%;
+  margin: 5%;
+  height: 450px;
+  border: 10px dashed black;
+  border-radius: 50px;
 }

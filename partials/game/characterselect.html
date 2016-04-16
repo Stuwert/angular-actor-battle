@@ -1,7 +1,0 @@
-<section>
-  <h2 ng-show='!teamsFull()'>{{showSelect}}</h2>
-  <h2 ng-show='teamsFull()'>Are you Ready to Go?</h2>
-  <input type='text' ng-show='!teamsFull()' ng-disabled='!canAddMembers()' ng-model='$parent.actor' placeholder='Seth or Meryl?'>
-  <button ng-show='!teamsFull()' ng-disabled='!canAddMembers()' name="button" ng-click="findActor()">Choose</button>
-  <button ng-show='teamsFull()' ng-click='changeState("fighterSelect")'>Ready to Fight!</button>
-</section>

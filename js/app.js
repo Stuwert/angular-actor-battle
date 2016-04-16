@@ -1,168 +1,57 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var angular = require('angular');
-var angularDragula = require('angular-dragula');
+module.exports = function($scope, benchService, activeService, screenService, dragulaService){
 
-var app = angular.module('actorBattle', [angularDragula(angular), require('angular-route')]);
+  $scope.currentTeam = activeService.activePlayer;
 
-app.controller('ScreenController', function(){
-  this.gameState = "selectScreen";
-  this.gameType = "";
-  this.selectChoice = "How would you like to battle today?"
-  this.intro = "Welcome to Actor Battle, the game where you get to answer life-long questions like 'Could Meryl Streep take on Seth Rogan?' Just select your favorite actors/actresses, throw them in the ring, and see who wins!"
-  this.player1length = null;
-  this.player2length = null;
+  $scope.returnClass = activeService.returnClass;
 
-  //Controls which screen is currently viewable.
-  this.currentState = function(scrn){
-    return scrn === this.gameState;
-  }
-  //changes the viewable screen
-  this.changeState = function(newState){
-    if (newState !== 'endGame'){
-      this.player1length = 1;
-      this.player2length = 1;
+  $scope.player1Bench = benchService.player1Bench;
+  $scope.player2Bench = benchService.player2Bench;
+
+  $scope.changeCurrentPlayer = activeService.changeActivePlayer;
+
+  $scope.$on('bag-one.cancel', function(e, el){
+    if(screenService.gameState === "draft" && confirm("Would you like to delete this element?")){
+      benchService.removeCharacterFromPlayer1(el[0].childNodes[1].innerHTML)
+      $scope.$apply();
     }
-    this.gameState = newState;
-  }
-})
 
-app.config(function($routeProvider){
-  $routeProvider
-    .when('/game/:gametype', {
-      templateUrl: 'partials/game.html',
-      controller: 'GameController'
-    })
-    .when('/end', {
-      templateUrl: 'partials/end.html',
-      controller: 'EndController'
-    })
-    .otherwise({
-      templateUrl: 'partials/start.html',
-      controller: 'ScreenController'
-    })
-})
-
-app.controller('GameController', function($scope, $http, $routeParams, dragulaService){
-  // Sets and stores current team.
-  $scope.currentTeam = 'team1';
-
-
-
-  //Game object for team 1
-  $scope.team1 = {
-    container: [],
-    teamSize: +$routeParams.gametype.split("on")[0],
-    current: true
-  };
-  //Game object for team 2.
-  $scope.team2 = {
-    container: [],
-    teamSize: +$routeParams.gametype.split("on")[1],
-    current: false
-  };
-
-  //Controls which player is active.
-  $scope.active1 = [];
-  $scope.active2 = [];
-
-  // General turn status and game State.
-  $scope.turnStatus = "team1";
-  $scope.gameState = 'teamSelect';
-
-  $scope.teamsFull = function(){
-    return $scope.team1.container.length === $scope.team1.teamSize && $scope.team2.container.length === $scope.team2.teamSize ? true : false;
-  }
-
-
-
-  //Returns if the current team selecting is full
-  $scope.canAddMembers = function(){
-    return $scope[$scope.currentTeam].container.length !== $scope[$scope.currentTeam].teamSize;
-  }
-
-  $scope.returnScreen = function(){
-    var obj = {
-      'teamSelect' : 'partials/game/characterselect.html',
-      'fighterSelect' : 'partials/game/fighterselect.html',
-      'attackSelect' : 'partials/game/attackselect.html'
+  })
+  $scope.$on('bag-two.cancel', function(e, el){
+    if(screenService.gameState === "draft" && confirm("Would you like to delete this element?")){
+      benchService.removeCharacterFromPlayer2(el[0].childNodes[1].innerHTML)
+      $scope.$apply();
     }
-    return obj[$scope.gameState];
-  }
 
-  $scope.changeState = function(newState){
-    $scope.gameState = newState;
-  }
+  })
 
-  $scope.showSelect = "Team 1 Select"
+}
 
-  this.currentState = function(scrn){
-    return scrn === $scope.gameState;
-  };
+},{}],2:[function(require,module,exports){
+module.exports = function($scope, activeService, benchService, httpService, dragulaService, screenService){
 
-
-  this.changeState = function(newState){
-    $scope.gameState = newState;
-  };
-
-  $scope.findActor = function(){
-    $http({
-      method: 'GET',
-      url: 'https://api.themoviedb.org/3/search/person?api_key=7fb22e55a5bafa415e02fe8d426ad2f9&query=' + $scope.actor.split(" ").join("+"),
-      dataType: 'jsonp'
-    }).then(function successCallback(response){
-      $scope[$scope.currentTeam].container.push(addActor(response))
-      $scope.actor = null;
+  $scope.findActoress = function(){
+    httpService.findActor($scope.actoress).then(function successCallback(response){
+      benchService[activeService.activePlayer + "AddToBench"](packageActoress(response))
+      $scope.actoress = ""
     }, function errorCallback(response){
       alert('Bing Bong')
     })
   }
 
-  $scope.returnClass = function(team){
-    if ($scope[team].current){
-      return team + "Show";
-    }else{
-      return null;
-    }
+  $scope.bothBenchesFull = function(){
+    return benchService.player1BenchIsFull() && benchService.player2BenchIsFull();
   }
 
-  $scope.changeCurrentTeam = function(num){
-    console.log($scope.team1);
-    console.log($scope.team2);
-    if($scope["team" + num].current){
-      $scope["team" + num].current = false;
-      $scope.showSelect = "Please Pick a Team"
-    }else{
-      if (num === 1){
-        $scope["team" + 2].current = false;
-        $scope.showSelect = "Team 1 Select"
-        $scope.currentTeam = 'team1'
-      }else{
-        $scope["team" + 1].current = false;
-        $scope.showSelect = "Team 2 Select"
-        $scope.currentTeam = 'team2'
-      }
-      $scope["team" + num].current = true;
-    }
+  $scope.currentTeamFull = function(){
+    return benchService[activeService.activePlayer + "BenchIsFull"]();
   }
 
-  this.changeCurrentTeam = function(team){
-    $scope.newClass[team] = $scope.newClass[team] === '' ? team + 'Show' : '';
-  };
 
-  $scope.$on('bag.cancel', function(e, el){
-    var theirTeam = el[0].parentNode.id;
-    var theirIndex = el.scope().index;
-    if(confirm("Would you like to delete this element?")){
-      $scope.$apply($scope[theirTeam].container.splice(theirIndex, 1));
-      console.log($scope[theirTeam].container);
-    }
-
-  })
-
-})
+}
 
 
-function addActor(response){
+function packageActoress(response){
   var actor = response.data["results"][0];
   var movie0 = actor["known_for"][0];
   var movie1 = actor["known_for"][1]
@@ -184,7 +73,207 @@ function newFighter(name, armor, actorpopularity, actorimage, image1, image2, at
   this.attack2 = {popularity: attack2 * 10, attack: attack2 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image2};
 }
 
-},{"angular":9,"angular-dragula":2,"angular-route":7}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
+module.exports = function(){
+
+}
+
+},{}],4:[function(require,module,exports){
+arguments[4][3][0].apply(exports,arguments)
+},{"dup":3}],5:[function(require,module,exports){
+arguments[4][3][0].apply(exports,arguments)
+},{"dup":3}],6:[function(require,module,exports){
+arguments[4][3][0].apply(exports,arguments)
+},{"dup":3}],7:[function(require,module,exports){
+
+var app = require('angular').module('actorBattle')
+
+app
+  .controller('IntroController', require('./IntroController'))
+  .controller('DraftController', require('./DraftController'))
+  .controller('FighterSelectController', require('./FighterSelectController'))
+  .controller('MoveSelectController', require('./MoveSelectController'))
+  .controller('EndScreenController', require('./EndScreenController'))
+  .controller('BenchController', require('./BenchController'))
+
+},{"./BenchController":1,"./DraftController":2,"./EndScreenController":3,"./FighterSelectController":4,"./IntroController":5,"./MoveSelectController":6,"angular":22}],8:[function(require,module,exports){
+var angular = require('angular')
+require('angular-route')
+var angularDragula = require('angular-dragula')
+
+var app = angular.module('actorBattle', ['ngRoute', angularDragula(angular)] )
+
+require('./services')
+require('./controllers')
+
+app
+  .config(function($routeProvider){
+    $routeProvider
+    .when('/draft/:gameparams', {
+      templateUrl: 'partials/draft.html',
+      controller: 'DraftController'
+    })
+    .when('/fighterselect', {
+      templateUrl: 'partials/fighterselect.html',
+      controller: 'FighterSelectController'
+    })
+    .when('/moveselect', {
+      templateUrl: 'partials/moveselect.html',
+      controller: 'MoveSelectController'
+    })
+    .when('/end', {
+      templateUrl: 'partials/end.html',
+      controller: 'EndScreenController'
+    })
+    .otherwise({
+      templateUrl: 'partials/intro.html',
+      controller: 'IntroController'
+    })
+  })
+
+},{"./controllers":7,"./services":13,"angular":22,"angular-dragula":15,"angular-route":20}],9:[function(require,module,exports){
+module.exports = function(){
+
+  var that = this;
+
+  this.activePlayer = "player1"
+  //could also be player2 or null
+
+
+  this.changeActivePlayer = function(player){
+    if(that.activePlayer === player){
+      that.activePlayer = null;
+    }else{
+      that.activePlayer = player;
+    }
+    console.log(that.activePlayer);
+  }
+
+  this.returnClass = function(player){
+    return that.activePlayer === player ? player + "Show" : null;
+  }
+}
+
+},{}],10:[function(require,module,exports){
+module.exports = function(){
+  var that = this;
+  this.player1Bench = [];
+  var player1MaxSize = 1;
+  var player1Fainted = [];
+  this.player2Bench = [];
+  var player2MaxSize = 1;
+
+  this.player2BenchSize = function(size){
+    player2MaxSize = size;
+  }
+
+  this.player1BenchSize = function(size){
+    player1MaxSize = size;
+  }
+
+  this.player1AddToBench = function(player){
+    that.player1Bench.push(player)
+  }
+
+  this.returnBenchPlayer1 = function(){
+    return that.player1Bench;
+  }
+
+  this.returnAvailablePlayer1Characters = function(){
+    return that.player1Bench.length;
+  }
+
+  this.characterFaintsPlayer1 = function(index){
+    player1Fainted.push(that.player1Bench.splice(index, 1))
+  }
+
+  this.returnBenchPlayer2 = function(){
+    return that.player2Bench;
+  }
+
+  this.player2AddToBench = function(player){
+    that.player2Bench.push(player)
+  }
+
+  this.returnAvailablePlayer2Characters = function(){
+    return that.player2Bench.length;
+  }
+
+  var returnCharacterIndexPlayer1 = function(name){
+    var returnI = -1;
+    that.player1Bench.forEach(function(actor, i){
+      if (actor.name === name){
+        returnI = i;
+      }
+    })
+    return returnI;
+  }
+
+  var returnCharacterIndexPlayer2 = function(name){
+    var returnI = -1;
+    that.player2Bench.forEach(function(actor, i){
+      if (actor.name === name){
+        returnI = i;
+      }
+    })
+    return returnI;
+  }
+
+  this.removeCharacterFromPlayer1 = function(name){
+    that.player1Bench.splice(returnCharacterIndexPlayer1(name), 1)
+  }
+
+  this.removeCharacterFromPlayer2 = function(name){
+    that.player2Bench.splice(returnCharacterIndexPlayer2(name), 1)
+  }
+
+  this.characterFaintsPlayer2 = function(index){
+    player2Fainted.push(that.player2Bench.splice(index, 1))
+  }
+
+  this.player1BenchIsFull = function(){
+    return that.player1Bench.length >= player1MaxSize
+  }
+
+  this.player2BenchIsFull = function(){
+    return that.player2Bench.length >= player2MaxSize
+  }
+
+
+}
+
+},{}],11:[function(require,module,exports){
+module.exports = function(){
+  
+}
+
+},{}],12:[function(require,module,exports){
+module.exports = function($http){
+  this.findActor = function(actoress){
+    return $http({
+      method: 'GET',
+      url: 'https://api.themoviedb.org/3/search/person?api_key=7fb22e55a5bafa415e02fe8d426ad2f9&query=' + actoress.split(" ").join("+"),
+      dataType: 'jsonp'
+    })
+  }
+}
+
+},{}],13:[function(require,module,exports){
+var app = require('angular').module('actorBattle')
+
+app
+  .service('httpService', require('./httpService'))
+  .service('benchService', require('./benchService'))
+  .service('activeService', require('./activeService'))
+  .service('screenService', require('./screenService'))
+  .service('fighterSerivce', require('./fighterService'))
+
+},{"./activeService":9,"./benchService":10,"./fighterService":11,"./httpService":12,"./screenService":14,"angular":22}],14:[function(require,module,exports){
+module.exports = function($location){
+  this.gameState = $location.$$path.split("/")[1]
+}
+
+},{}],15:[function(require,module,exports){
 'use strict';
 
 var dragulaService = require('./service');
@@ -201,7 +290,7 @@ function register (angular) {
 
 module.exports = register;
 
-},{"./directive":3,"./service":5}],3:[function(require,module,exports){
+},{"./directive":16,"./service":18}],16:[function(require,module,exports){
 'use strict';
 
 var dragula = require('dragula');
@@ -259,7 +348,7 @@ function register (angular) {
 
 module.exports = register;
 
-},{"dragula":17}],4:[function(require,module,exports){
+},{"dragula":30}],17:[function(require,module,exports){
 'use strict';
 
 var atoa = require('atoa');
@@ -300,7 +389,7 @@ function replicateEvents (angular, bag, scope) {
 
 module.exports = replicateEvents;
 
-},{"atoa":10}],5:[function(require,module,exports){
+},{"atoa":23}],18:[function(require,module,exports){
 'use strict';
 
 var dragula = require('dragula');
@@ -416,7 +505,7 @@ function register (angular) {
 
 module.exports = register;
 
-},{"./replicate-events":4,"dragula":17}],6:[function(require,module,exports){
+},{"./replicate-events":17,"dragula":30}],19:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.0
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -1434,11 +1523,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],7:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":6}],8:[function(require,module,exports){
+},{"./angular-route":19}],21:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.0
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -31867,14 +31956,14 @@ $provide.value("$locale", {
 })(window, document);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],9:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":8}],10:[function(require,module,exports){
+},{"./angular":21}],23:[function(require,module,exports){
 module.exports = function atoa (a, n) { return Array.prototype.slice.call(a, n); }
 
-},{}],11:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 var ticky = require('ticky');
@@ -31886,7 +31975,7 @@ module.exports = function debounce (fn, args, ctx) {
   });
 };
 
-},{"ticky":18}],12:[function(require,module,exports){
+},{"ticky":31}],25:[function(require,module,exports){
 'use strict';
 
 var atoa = require('atoa');
@@ -31942,7 +32031,7 @@ module.exports = function emitter (thing, options) {
   return thing;
 };
 
-},{"./debounce":11,"atoa":10}],13:[function(require,module,exports){
+},{"./debounce":24,"atoa":23}],26:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -32047,7 +32136,7 @@ function find (el, type, fn) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./eventmap":14,"custom-event":15}],14:[function(require,module,exports){
+},{"./eventmap":27,"custom-event":28}],27:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -32064,7 +32153,7 @@ for (eventname in global) {
 module.exports = eventmap;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],15:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 (function (global){
 
 var NativeCustomEvent = global.CustomEvent;
@@ -32116,7 +32205,7 @@ function CustomEvent (type, params) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],16:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 
 var cache = {};
@@ -32151,7 +32240,7 @@ module.exports = {
   rm: rmClass
 };
 
-},{}],17:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -32756,7 +32845,7 @@ function getCoord (coord, e) {
 module.exports = dragula;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./classes":16,"contra/emitter":12,"crossvent":13}],18:[function(require,module,exports){
+},{"./classes":29,"contra/emitter":25,"crossvent":26}],31:[function(require,module,exports){
 var si = typeof setImmediate === 'function', tick;
 if (si) {
   tick = function (fn) { setImmediate(fn); };
@@ -32765,4 +32854,4 @@ if (si) {
 }
 
 module.exports = tick;
-},{}]},{},[1]);
+},{}]},{},[8]);

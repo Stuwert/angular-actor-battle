@@ -160,7 +160,7 @@ input {
   font-size: 40px;
   border: 2px solid black; }
 
-[class^='team'] {
+[class^='player'] {
   background-color: black;
   height: 450px;
   min-width: 900px;
@@ -172,7 +172,7 @@ input {
   flex-direction: row-reverse;
   justify-content: space-around;
   align-items: center; }
-  [class^='team'] div {
+  [class^='player'] div {
     height: 90%;
     width: 350px;
     background-color: white;
@@ -181,43 +181,50 @@ input {
     align-items: center;
     justify-content: space-around;
     border-radius: 15px; }
-    [class^='team'] div h5 {
+    [class^='player'] div h5 {
       margin-top: 10px; }
-  [class^='team'] h3 {
+  [class^='player'] h3 {
     position: absolute;
     color: white;
     top: 185px;
     width: 450px;
     background-color: black; }
 
-.team1 {
+.player1 {
   right: 850px;
   transition: right 0.75s;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
   padding-right: 100px;
   z-index: 10; }
-  .team1 h3 {
+  .player1 h3 {
     transform: rotate(90deg);
     right: -165px;
     margin: 0; }
 
-.team1Show {
+.player1Show {
   right: 150px; }
 
-.team2 {
+.player2 {
   left: 850px;
   transition: left 0.75s;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
   flex-direction: row;
   z-index: 10; }
-  .team2 h3 {
+  .player2 h3 {
     transform: rotate(-90deg);
     left: -165px; }
 
-.team2Show {
+.player2Show {
   left: 150px; }
+
+.fighter {
+  width: 95%;
+  margin: 5%;
+  height: 450px;
+  border: 10px dashed black;
+  border-radius: 50px; }
 
 * {
   box-sizing: border-box; }

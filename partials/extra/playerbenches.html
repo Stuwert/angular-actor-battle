@@ -1,0 +1,14 @@
+<div id='player1' class="player1 container" ng-class="returnClass('player1')" dragula='"bag-one"'>
+    <h3 ng-click="changeCurrentPlayer('player1')">Player 1</h3>
+    <div ng-repeat='actor in player1Bench'>
+      <h5 ng-bind='actor.name'>{{actor.name}}</h5>
+      <img ng-bind='actor.img' src="{{actor.img}}" alt="" />
+    </div>
+</div>
+<div id='player2' class="player2 container" ng-class="returnClass('player2')" dragula='"bag-two"' >
+  <h3 ng-click="changeCurrentPlayer('player2')">Player 2</h3>
+  <div ng-repeat='actor in player2Bench' >
+    <h5 >{{actor.name}}</h5>
+    <img  src="{{actor.img}}" alt="" />
+  </div>
+</div>

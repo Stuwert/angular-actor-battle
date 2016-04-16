@@ -1,0 +1,12 @@
+<section>
+  <h2>Draft your Teams!</h2>
+  <input ng-show="!bothBenchesFull()" ng-disabled="currentTeamFull()" type="text" ng-model="actoress" placeholder='Seth or Meryl?'>
+  <button ng-show="!bothBenchesFull()" ng-click="findActoress()">Choose</button>
+  <a href="/#/fighterselect" ng-show="bothBenchesFull()">
+    <button>
+      Ready to Fight?
+    </button>
+  </a>
+</section>
+
+<ng-include src='"partials/extra/playerbenches.html"' ng-controller="BenchController" />

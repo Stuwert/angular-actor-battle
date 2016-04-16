@@ -1,184 +1,33 @@
-var angular = require('angular');
-var angularDragula = require('angular-dragula');
+var angular = require('angular')
+require('angular-route')
+var angularDragula = require('angular-dragula')
 
-var app = angular.module('actorBattle', [angularDragula(angular), require('angular-route')]);
+var app = angular.module('actorBattle', ['ngRoute', angularDragula(angular)] )
 
-app.controller('ScreenController', function(){
-  this.gameState = "selectScreen";
-  this.gameType = "";
-  this.selectChoice = "How would you like to battle today?"
-  this.intro = "Welcome to Actor Battle, the game where you get to answer life-long questions like 'Could Meryl Streep take on Seth Rogan?' Just select your favorite actors/actresses, throw them in the ring, and see who wins!"
-  this.player1length = null;
-  this.player2length = null;
+require('./services')
+require('./controllers')
 
-  //Controls which screen is currently viewable.
-  this.currentState = function(scrn){
-    return scrn === this.gameState;
-  }
-  //changes the viewable screen
-  this.changeState = function(newState){
-    if (newState !== 'endGame'){
-      this.player1length = 1;
-      this.player2length = 1;
-    }
-    this.gameState = newState;
-  }
-})
-
-app.config(function($routeProvider){
-  $routeProvider
-    .when('/game/:gametype', {
-      templateUrl: 'partials/game.html',
-      controller: 'GameController'
+app
+  .config(function($routeProvider){
+    $routeProvider
+    .when('/draft/:gameparams', {
+      templateUrl: 'partials/draft.html',
+      controller: 'DraftController'
+    })
+    .when('/fighterselect', {
+      templateUrl: 'partials/fighterselect.html',
+      controller: 'FighterSelectController'
+    })
+    .when('/moveselect', {
+      templateUrl: 'partials/moveselect.html',
+      controller: 'MoveSelectController'
     })
     .when('/end', {
       templateUrl: 'partials/end.html',
-      controller: 'EndController'
+      controller: 'EndScreenController'
     })
     .otherwise({
-      templateUrl: 'partials/start.html',
-      controller: 'ScreenController'
+      templateUrl: 'partials/intro.html',
+      controller: 'IntroController'
     })
-})
-
-app.controller('GameController', function($scope, $http, $routeParams, dragulaService){
-  // Sets and stores current team.
-  $scope.currentTeam = 'team1';
-
-
-
-  //Game object for team 1
-  $scope.team1 = {
-    container: [],
-    teamSize: +$routeParams.gametype.split("on")[0],
-    current: true
-  };
-  //Game object for team 2.
-  $scope.team2 = {
-    container: [],
-    teamSize: +$routeParams.gametype.split("on")[1],
-    current: false
-  };
-
-  //Controls which player is active.
-  $scope.active1 = [];
-  $scope.active2 = [];
-
-  // General turn status and game State.
-  $scope.turnStatus = "team1";
-  $scope.gameState = 'teamSelect';
-
-  $scope.teamsFull = function(){
-    return $scope.team1.container.length === $scope.team1.teamSize && $scope.team2.container.length === $scope.team2.teamSize ? true : false;
-  }
-
-
-
-  //Returns if the current team selecting is full
-  $scope.canAddMembers = function(){
-    return $scope[$scope.currentTeam].container.length !== $scope[$scope.currentTeam].teamSize;
-  }
-
-  $scope.returnScreen = function(){
-    var obj = {
-      'teamSelect' : 'partials/game/characterselect.html',
-      'fighterSelect' : 'partials/game/fighterselect.html',
-      'attackSelect' : 'partials/game/attackselect.html'
-    }
-    return obj[$scope.gameState];
-  }
-
-  $scope.changeState = function(newState){
-    $scope.gameState = newState;
-  }
-
-  $scope.showSelect = "Team 1 Select"
-
-  this.currentState = function(scrn){
-    return scrn === $scope.gameState;
-  };
-
-
-  this.changeState = function(newState){
-    $scope.gameState = newState;
-  };
-
-  $scope.findActor = function(){
-    $http({
-      method: 'GET',
-      url: 'https://api.themoviedb.org/3/search/person?api_key=7fb22e55a5bafa415e02fe8d426ad2f9&query=' + $scope.actor.split(" ").join("+"),
-      dataType: 'jsonp'
-    }).then(function successCallback(response){
-      $scope[$scope.currentTeam].container.push(addActor(response))
-      $scope.actor = null;
-    }, function errorCallback(response){
-      alert('Bing Bong')
-    })
-  }
-
-  $scope.returnClass = function(team){
-    if ($scope[team].current){
-      return team + "Show";
-    }else{
-      return null;
-    }
-  }
-
-  $scope.changeCurrentTeam = function(num){
-    console.log($scope.team1);
-    console.log($scope.team2);
-    if($scope["team" + num].current){
-      $scope["team" + num].current = false;
-      $scope.showSelect = "Please Pick a Team"
-    }else{
-      if (num === 1){
-        $scope["team" + 2].current = false;
-        $scope.showSelect = "Team 1 Select"
-        $scope.currentTeam = 'team1'
-      }else{
-        $scope["team" + 1].current = false;
-        $scope.showSelect = "Team 2 Select"
-        $scope.currentTeam = 'team2'
-      }
-      $scope["team" + num].current = true;
-    }
-  }
-
-  this.changeCurrentTeam = function(team){
-    $scope.newClass[team] = $scope.newClass[team] === '' ? team + 'Show' : '';
-  };
-
-  $scope.$on('bag.cancel', function(e, el){
-    var theirTeam = el[0].parentNode.id;
-    var theirIndex = el.scope().index;
-    if(confirm("Would you like to delete this element?")){
-      $scope.$apply($scope[theirTeam].container.splice(theirIndex, 1));
-      console.log($scope[theirTeam].container);
-    }
-
   })
-
-})
-
-
-function addActor(response){
-  var actor = response.data["results"][0];
-  var movie0 = actor["known_for"][0];
-  var movie1 = actor["known_for"][1]
-  var actorArmor = 0;
-  actor["known_for"].forEach(function(item){
-    actorArmor += item["vote_average"];
-  })
-  return new newFighter(actor.name, actorArmor, actor.popularity, actor["profile_path"], movie0["poster_path"], movie1["poster_path"], movie0["popularity"], movie1["popularity"]);
-};
-
-function newFighter(name, armor, actorpopularity, actorimage, image1, image2, attack1, attack2){
-  this.name = name;
-  this.armor = armor > 50 ? armor / 3 : armor * 1.5;
-  this.popularity = actorpopularity;
-  this.status = "active";
-  this.health = 500;
-  this.img = "http://image.tmdb.org/t/p/w185" + actorimage;
-  this.attack1 = {popularity: attack1 * 10, attack: attack1 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image1}
-  this.attack2 = {popularity: attack2 * 10, attack: attack2 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image2};
-}

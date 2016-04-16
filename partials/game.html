@@ -2,19 +2,20 @@
   <header>
     <h6>Actor Battle</h6>
   </header>
-  <section ng-include="returnScreen()">
 
-  </section>
-  <div id='team1' class="team1 container" ng-class="returnClass('team1')" dragula='"bag"' dragula-model='team1.container'>
+  <section ng-include="returnScreen()"></section>
+
+  <div id='team1' class="team1 container" ng-class="returnClass('team1')" dragula='"bag-one"' dragula-scope="$parent" dragula-model='team1.container' >
     <h3 ng-click="changeCurrentTeam(1)">Team 1</h3>
-    <div ng-repeat='actor in team1.container'>
+    <div ng-repeat='actor in team1.container' ng-bind="actor">
       <h5 ng-bind='actor.name'>{{actor.name}}</h5>
       <img ng-bind='actor.img' src="{{actor.img}}" alt="" />
     </div>
   </div>
-  <div id='team2' class="team2 container" ng-class="returnClass('team2')" dragula='"bag"' dragula-model='team2.container' >
+
+  <div id='team2' class="team2 container" ng-class="returnClass('team2')" dragula='"bag-two"' dragula-model='team2.container' dragula-scope="$parent">
     <h3 ng-click="changeCurrentTeam(2)">Team 2</h3>
-    <div ng-repeat='actor in team2.container' >
+    <div ng-repeat='actor in team2.container' ng-bind="actor"  >
       <h5 >{{actor.name}}</h5>
       <img  src="{{actor.img}}" alt="" />
     </div>
