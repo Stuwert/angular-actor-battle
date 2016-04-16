@@ -225,6 +225,20 @@ input {
   height: 450px;
   border: 10px dashed black;
   border-radius: 50px; }
+  .fighter button {
+    height: 95%;
+    width: 25%;
+    margin: 2.5%; }
+    .fighter button img {
+      height: 50%; }
+    .fighter button p {
+      margin: 0; }
+
+.bench button {
+  display: none; }
+
+.gu-mirror button {
+  display: none; }
 
 * {
   box-sizing: border-box; }

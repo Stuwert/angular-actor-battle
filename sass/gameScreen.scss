@@ -102,4 +102,27 @@ input{
   height: 450px;
   border: 10px dashed black;
   border-radius: 50px;
+  button{
+    height: 95%;
+    width: 25%;
+    margin: 2.5%;
+    img{
+      height: 50%;
+    }
+    p{
+      margin: 0;
+    }
+  }
+}
+
+.bench{
+  button{
+    display: none;
+  }
+}
+
+.gu-mirror{
+  button{
+    display: none;
+  }
 }

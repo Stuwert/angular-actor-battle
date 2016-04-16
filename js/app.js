@@ -25,6 +25,9 @@ module.exports = function($scope, benchService, activeService, screenService, dr
 
   })
 
+  $scope.emitEvent = function(){
+    console.log("bingity bong");
+  }
 
 
 }
@@ -81,7 +84,7 @@ module.exports = function(){
 }
 
 },{}],4:[function(require,module,exports){
-module.exports = function($scope, dragulaService, benchService, fighterService){
+module.exports = function($scope, dragulaService, benchService, fighterService, $rootScope){
 
   dragulaService.options($scope, 'bag-one', {
       copy: true
@@ -99,6 +102,20 @@ module.exports = function($scope, dragulaService, benchService, fighterService){
     fighterService.setPlayer2Fighter(benchService.returnBenchPlayer2(el[0].childNodes[1].innerHTML));
     console.log(fighterService.player2Fighter);
   })
+
+
+    $scope.emitEvent = function(){
+      console.log("fighter scope bong");
+    }
+
+
+  $scope.$on('bag-one.player1Attack', function(data){
+    console.log(data);
+  })
+  // $scope.$on('player2Attack', function(data){
+  //   console.log(data);
+  // })
+
 }
 
 },{}],5:[function(require,module,exports){
@@ -274,6 +291,11 @@ module.exports = function(){
 module.exports = function(){
   this.player1Fighter;
   this.player2Fighter;
+  this.player1Attack;
+  this.player2Attack;
+  this.numberOfFights = 0;
+  this.winningPlayer;
+  
   var that = this;
 
   this.setPlayer1Fighter = function(char){
@@ -283,10 +305,55 @@ module.exports = function(){
     this.player2Fighter = char;
   }
 
+  this.readyToFight = function(){
+    return that.player1Attack !== null && that.player2Attack !== null;
+  }
+
+  this.fight = function(){
+    that.numberOfFights++;
+    return fightLoop(that.player1Fighter, that.player1Attack, that.player2Fighter, that.player2Attack);
+  }
+
+
   //fxn to check if there are two fighters
   // add player1 attack info
   // add fight calculation
+  // returns an object with winning player and losing player
 }
+
+// want to add $scope.$emit(myCustomEvent) - for button fire
+
+function fightLoop(character1, character1Attack, character2, character2Attack){
+
+
+  if(isAlive(character1) && isAlive(character2)){
+    return fightLoop(character1, character1Attack, character2, character2Attack);
+  }else{
+    return {
+      winner: "",
+      loser: ""
+    }
+  }
+}
+
+function isAlive(){
+
+}
+
+// function fightLoop(character1, character2){
+//   player1attacktotal++;
+//   player2attacktotal++;
+//   turnNum++;
+//   var char1pop = attackstatus["player1"].popularity/attackstatus["player2"].popularity;
+//   var char2pop = 1/char1pop;
+//   calculateHealth(character1, damageDealt(damageMultiplier(attackstatus["player2"].attack, char2pop), character1.armor));
+//   calculateHealth(character2, damageDealt(damageMultiplier(attackstatus["player1"].attack, char1pop), character1.armor));
+//   // printScreen(character1, character2Damage, character2, character1Damage);
+//   var winner = fightWinner(character1, character2);
+//   if (!winner){
+//     fightLoop(character1, character2);
+//   }
+// }
 
 },{}],12:[function(require,module,exports){
 module.exports = function($http){

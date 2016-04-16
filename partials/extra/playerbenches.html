@@ -1,14 +1,30 @@
-<div id='player1' class="player1 container" ng-class="returnClass('player1')" dragula='"bag-one"' >
+<div id='player1' class="player1 container bench" ng-class="returnClass('player1')" dragula='"bag-one"' >
     <h3 ng-click="changeCurrentPlayer('player1')">Player 1</h3>
-    <div ng-repeat='actor in player1Bench' dragula-model='"player1Bench"'>
+    <div ng-click="emitEvent()" ng-repeat='actor in player1Bench' dragula-model='"player1Bench"'dragula-scope="$parent" >
       <h5 ng-bind='actor.name'>{{actor.name}}</h5>
       <img ng-bind='actor.img' src="{{actor.img}}" alt="" />
+      <button>
+        <img ng-src="{{actor.attack1.img}}" ng-click="$emit('player1Attack', 'attack2')" class="attack-1" />
+        <p>Attack 1</p>
+      </button>
+      <button ng-click="$emit('player1Attack', 'attack2')">
+        <img ng-src="{{actor.attack2.img}}" class="attack-1"/>
+        <p>Attack 2</p>
+      </button>
     </div>
 </div>
-<div id='player2' class="player2 container" ng-class="returnClass('player2')" dragula='"bag-two"' >
+<div id='player2' class="player2 container bench" ng-class="returnClass('player2')" dragula='"bag-two"' >
   <h3 ng-click="changeCurrentPlayer('player2')">Player 2</h3>
-  <div ng-repeat='actor in player2Bench' dragula-model='"player1Bench"'>
+  <div ng-repeat='actor in player2Bench' dragula-model='"player2Bench"'>
     <h5 >{{actor.name}}</h5>
     <img  src="{{actor.img}}" alt="" />
+    <button ng-click="$emit('player2Attack', 'attack1')">
+      <img ng-bind='actor.attack1.img' ng-src="{{actor.attack1.img}}" class="attack-1" />
+      <p>Attack 1</p>
+    </button>
+    <button ng-click="$emit('player2Attack', 'attack2')">
+      <img ng-bind="actor.attack2.img" ng-src="{{actor.attack2.img}}" class="attack-1" />
+      <p>Attack 2</p>
+    </button>
   </div>
 </div>

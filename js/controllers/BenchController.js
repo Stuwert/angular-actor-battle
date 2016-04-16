@@ -24,6 +24,9 @@ module.exports = function($scope, benchService, activeService, screenService, dr
 
   })
 
+  $scope.emitEvent = function(){
+    console.log("bingity bong");
+  }
 
 
 }
