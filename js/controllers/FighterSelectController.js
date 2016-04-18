@@ -22,7 +22,7 @@ module.exports = function($scope, dragulaService, benchService, fighterService, 
 
   $scope.startFight = function(){
     if(fighterService.readyToFight){
-      alert('bing bong');
+      console.log(fighterService.fight());
     }
   }
 
