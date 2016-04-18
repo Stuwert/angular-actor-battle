@@ -240,6 +240,21 @@ input {
 .gu-mirror button {
   display: none; }
 
+.endScreen {
+  width: 50%;
+  margin: 2% 25%;
+  background-color: #96CD39;
+  border-radius: 15px;
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+  .endScreen img {
+    float: left; }
+  .endScreen p {
+    margin: 0;
+    float: left; }
+
 * {
   box-sizing: border-box; }
 

@@ -126,3 +126,21 @@ input{
     display: none;
   }
 }
+
+.endScreen{
+  width: 50%;
+  margin: 2% 25%;
+  background-color: #96CD39;
+  border-radius: 15px;
+  height: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  img{
+    float: left;
+  }
+  p{
+    margin: 0;
+    float: left;
+  }
+}

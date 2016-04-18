@@ -55,13 +55,13 @@ function fightLoop(character1, character2){
       return null
     }else if(character1.health <= 0){
       return {
-        winner: "player2Fighter",
-        loser: "player1Fighter"
+        winner: "player2",
+        loser: "player1"
       }
     }else{
       return {
-        winner: "player1Fighter",
-        loser: "player2Fighter"
+        winner: "player1",
+        loser: "player2"
       }
     }
   }else{

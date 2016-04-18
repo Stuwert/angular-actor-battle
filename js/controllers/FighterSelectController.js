@@ -1,4 +1,4 @@
-module.exports = function($scope, dragulaService, benchService, fighterService, $rootScope){
+module.exports = function($scope, dragulaService, benchService, fighterService, $location){
 
   dragulaService.options($scope, 'bag-one', {
       copy: true
@@ -22,7 +22,27 @@ module.exports = function($scope, dragulaService, benchService, fighterService, 
 
   $scope.startFight = function(){
     if(fighterService.readyToFight){
-      console.log(fighterService.fight());
+      var fightResult = fighterService.fight();
+      if(fightResult){
+        if(fightResult.loser === 'player1'){
+          benchService.characterFaintsPlayer1(fighterService.player1Fighter.name)
+          benchService.setPlayer2Health(fighterService.player2Fighter)
+          // set player 2 health
+        }else{
+          console.log(fighterService.player1Fighter.health);
+          benchService.characterFaintsPlayer2(fighterService.player2Fighter.name)
+          benchService.setPlayer1Health(fighterService.player1Fighter)
+          //set player 1 health
+        }
+        var elToRemove = angular.element(document.querySelector('#' + fightResult.loser))
+        elToRemove.empty();
+      }else{
+        angular.element(document.querySelector('#player1')).empty()
+        angular.element(document.querySelector('#player2')).empty()
+      }
+      if(benchService.player1Bench.length === 0 || benchService.player2Bench.length === 0  ){
+        $location.path('/end')
+      }
     }
   }
 

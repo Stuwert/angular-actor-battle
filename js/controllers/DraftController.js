@@ -1,4 +1,10 @@
-module.exports = function($scope, activeService, benchService, httpService, dragulaService, screenService){
+module.exports = function($scope, activeService, benchService, httpService, dragulaService, screenService, $routeParams){
+
+  var player1Bench = +$routeParams.gameparams.split("on")[0]
+  var player2Bench = +$routeParams.gameparams.split("on")[1]
+
+  benchService.setPlayer2BenchSize(player2Bench)
+  benchService.setPlayer1BenchSize(player1Bench)
 
   $scope.findActoress = function(){
     httpService.findActor($scope.actoress).then(function successCallback(response){
