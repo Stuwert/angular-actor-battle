@@ -25,7 +25,7 @@ module.exports = function($scope, benchService, activeService, screenService, dr
 
   })
 
-  $scope.emitEvent = function(){
+  this.emitEvent = function(){
     console.log("bingity bong");
   }
 
@@ -94,27 +94,23 @@ module.exports = function($scope, dragulaService, benchService, fighterService, 
       copy: true
     });
 
-  $scope.$on('bag-one.drop', function(e, el){
-    fighterService.setPlayer1Fighter(benchService.returnBenchPlayer1(el[0].childNodes[1].innerHTML));
-    console.log(fighterService.player1Fighter);
-  })
-  $scope.$on('bag-two.drop', function(e, el){
-    fighterService.setPlayer2Fighter(benchService.returnBenchPlayer2(el[0].childNodes[1].innerHTML));
-    console.log(fighterService.player2Fighter);
-  })
-
-
-    $scope.emitEvent = function(){
-      console.log("fighter scope bong");
+  $scope.$on('bag-one.drop', function(e, el, target){
+    if (target){
+      fighterService.setPlayer1Fighter(benchService.returnBenchPlayer1(el[0].childNodes[1].innerHTML));
     }
-
-
-  $scope.$on('bag-one.player1Attack', function(data){
-    console.log(data);
   })
-  // $scope.$on('player2Attack', function(data){
-  //   console.log(data);
-  // })
+  $scope.$on('bag-two.drop', function(e, el, target){
+    if(target){
+      fighterService.setPlayer2Fighter(benchService.returnBenchPlayer2(el[0].childNodes[1].innerHTML));
+    }
+  })
+
+
+  $scope.startFight = function(){
+    if(fighterService.readyToFight){
+      alert('bing bong');
+    }
+  }
 
 }
 
@@ -295,19 +291,25 @@ module.exports = function(){
   this.player2Attack;
   this.numberOfFights = 0;
   this.winningPlayer;
-  
+  this.readyToFight = false;
+
   var that = this;
 
   this.setPlayer1Fighter = function(char){
     this.player1Fighter = char;
+    that.checkReady();
   }
   this.setPlayer2Fighter = function(char){
     this.player2Fighter = char;
+    that.checkReady();
   }
 
-  this.readyToFight = function(){
-    return that.player1Attack !== null && that.player2Attack !== null;
+  this.checkReady = function(){
+    if (that.player1Fighter !== undefined && that.player2Fighter !== undefined){
+      that.readyToFight = true;
+    }
   }
+
 
   this.fight = function(){
     that.numberOfFights++;

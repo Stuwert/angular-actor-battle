@@ -1,6 +1,6 @@
 <div id='player1' class="player1 container bench" ng-class="returnClass('player1')" dragula='"bag-one"' >
     <h3 ng-click="changeCurrentPlayer('player1')">Player 1</h3>
-    <div ng-click="emitEvent()" ng-repeat='actor in player1Bench' dragula-model='"player1Bench"'dragula-scope="$parent" >
+    <div ng-click="bench.emitEvent()" ng-repeat='actor in player1Bench' dragula-model='"player1Bench"' dragula-scope="$scope">
       <h5 ng-bind='actor.name'>{{actor.name}}</h5>
       <img ng-bind='actor.img' src="{{actor.img}}" alt="" />
       <button>

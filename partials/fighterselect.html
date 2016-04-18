@@ -1,5 +1,5 @@
 <div class="fighter container" id="player1" dragula='"bag-one"'></div>
-<button>Fight!</button>
+<button ng-click="startFight()">Fight!</button>
 <div class="fighter container" id="player2" dragula='"bag-two"'></div>
 
-<ng-include src='"partials/extra/playerbenches.html"' ng-controller="BenchController" />
+<ng-include src='"partials/extra/playerbenches.html"' ng-controller="BenchController as bench" />

@@ -5,19 +5,25 @@ module.exports = function(){
   this.player2Attack;
   this.numberOfFights = 0;
   this.winningPlayer;
-  
+  this.readyToFight = false;
+
   var that = this;
 
   this.setPlayer1Fighter = function(char){
     this.player1Fighter = char;
+    that.checkReady();
   }
   this.setPlayer2Fighter = function(char){
     this.player2Fighter = char;
+    that.checkReady();
   }
 
-  this.readyToFight = function(){
-    return that.player1Attack !== null && that.player2Attack !== null;
+  this.checkReady = function(){
+    if (that.player1Fighter !== undefined && that.player2Fighter !== undefined){
+      that.readyToFight = true;
+    }
   }
+
 
   this.fight = function(){
     that.numberOfFights++;
