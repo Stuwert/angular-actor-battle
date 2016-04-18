@@ -1,5 +1,28 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports = function($scope, benchService, activeService, screenService, dragulaService){
+module.exports = function($scope, activeService, benchService, httpService, dragulaService, screenService, $routeParams){
+
+  var player1Bench = +$routeParams.gameparams.split("on")[0]
+  var player2Bench = +$routeParams.gameparams.split("on")[1]
+
+  benchService.setPlayer2BenchSize(player2Bench)
+  benchService.setPlayer1BenchSize(player1Bench)
+
+  $scope.findActoress = function(){
+    httpService.findActor($scope.actoress).then(function successCallback(response){
+      benchService[activeService.activePlayer + "AddToBench"](packageActoress(response))
+      $scope.actoress = ""
+    }, function errorCallback(response){
+      alert('Bing Bong')
+    })
+  }
+
+  $scope.bothBenchesFull = function(){
+    return benchService.player1BenchIsFull() && benchService.player2BenchIsFull();
+  }
+
+  $scope.currentTeamFull = function(){
+    return benchService[activeService.activePlayer + "BenchIsFull"]();
+  }
 
   $scope.currentTeam = activeService.activePlayer;
 
@@ -25,38 +48,6 @@ module.exports = function($scope, benchService, activeService, screenService, dr
 
   })
 
-  this.emitEvent = function(){
-    console.log("bingity bong");
-  }
-
-
-}
-
-},{}],2:[function(require,module,exports){
-module.exports = function($scope, activeService, benchService, httpService, dragulaService, screenService, $routeParams){
-
-  var player1Bench = +$routeParams.gameparams.split("on")[0]
-  var player2Bench = +$routeParams.gameparams.split("on")[1]
-
-  benchService.setPlayer2BenchSize(player2Bench)
-  benchService.setPlayer1BenchSize(player1Bench)
-
-  $scope.findActoress = function(){
-    httpService.findActor($scope.actoress).then(function successCallback(response){
-      benchService[activeService.activePlayer + "AddToBench"](packageActoress(response))
-      $scope.actoress = ""
-    }, function errorCallback(response){
-      alert('Bing Bong')
-    })
-  }
-
-  $scope.bothBenchesFull = function(){
-    return benchService.player1BenchIsFull() && benchService.player2BenchIsFull();
-  }
-
-  $scope.currentTeamFull = function(){
-    return benchService[activeService.activePlayer + "BenchIsFull"]();
-  }
 
 
 }
@@ -84,7 +75,7 @@ function newFighter(name, armor, actorpopularity, actorimage, image1, image2, at
   this.attack2 = {popularity: attack2 * 10, attack: attack2 * actorpopularity * 3, img: "http://image.tmdb.org/t/p/w185" + image2};
 }
 
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 module.exports = function($scope, benchService){
 
   if(benchService.player1Bench.length === 0 && benchService.player2Bench.length === 0){
@@ -99,8 +90,16 @@ module.exports = function($scope, benchService){
 
 }
 
-},{}],4:[function(require,module,exports){
-module.exports = function($scope, dragulaService, benchService, fighterService, $location){
+},{}],3:[function(require,module,exports){
+module.exports = function($scope, dragulaService, benchService, fighterService, $location, activeService){
+
+  $scope.currentTeam = activeService.activePlayer;
+
+  $scope.returnClass = activeService.returnClass;
+  $scope.player1Bench = benchService.player1Bench;
+  $scope.player2Bench = benchService.player2Bench;
+
+  $scope.changeCurrentPlayer = activeService.changeActivePlayer;
 
   dragulaService.options($scope, 'bag-one', {
       copy: true
@@ -150,14 +149,12 @@ module.exports = function($scope, dragulaService, benchService, fighterService, 
 
 }
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 module.exports = function(){
 
 }
 
-},{}],6:[function(require,module,exports){
-arguments[4][5][0].apply(exports,arguments)
-},{"dup":5}],7:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 
 var app = require('angular').module('actorBattle')
 
@@ -165,11 +162,9 @@ app
   .controller('IntroController', require('./IntroController'))
   .controller('DraftController', require('./DraftController'))
   .controller('FighterSelectController', require('./FighterSelectController'))
-  .controller('MoveSelectController', require('./MoveSelectController'))
   .controller('EndScreenController', require('./EndScreenController'))
-  .controller('BenchController', require('./BenchController'))
 
-},{"./BenchController":1,"./DraftController":2,"./EndScreenController":3,"./FighterSelectController":4,"./IntroController":5,"./MoveSelectController":6,"angular":22}],8:[function(require,module,exports){
+},{"./DraftController":1,"./EndScreenController":2,"./FighterSelectController":3,"./IntroController":4,"angular":20}],6:[function(require,module,exports){
 var angular = require('angular')
 require('angular-route')
 var angularDragula = require('angular-dragula')
@@ -190,10 +185,6 @@ app
       templateUrl: 'partials/fighterselect.html',
       controller: 'FighterSelectController'
     })
-    .when('/moveselect', {
-      templateUrl: 'partials/moveselect.html',
-      controller: 'MoveSelectController'
-    })
     .when('/end', {
       templateUrl: 'partials/end.html',
       controller: 'EndScreenController'
@@ -204,7 +195,7 @@ app
     })
   })
 
-},{"./controllers":7,"./services":13,"angular":22,"angular-dragula":15,"angular-route":20}],9:[function(require,module,exports){
+},{"./controllers":5,"./services":11,"angular":20,"angular-dragula":13,"angular-route":18}],7:[function(require,module,exports){
 module.exports = function(){
 
   var that = this;
@@ -227,7 +218,7 @@ module.exports = function(){
   }
 }
 
-},{}],10:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 module.exports = function(){
   var that = this;
   this.player1Bench = [];
@@ -332,7 +323,7 @@ module.exports = function(){
 
 }
 
-},{}],11:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = function(){
   this.player1Fighter;
   this.player2Fighter;
@@ -458,7 +449,7 @@ function fightWinner(character1, character2){
   return winningchar;
 }
 
-},{}],12:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = function($http){
   this.findActor = function(actoress){
     return $http({
@@ -469,7 +460,7 @@ module.exports = function($http){
   }
 }
 
-},{}],13:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 var app = require('angular').module('actorBattle')
 
 app
@@ -479,12 +470,12 @@ app
   .service('screenService', require('./screenService'))
   .service('fighterService', require('./fighterService'))
 
-},{"./activeService":9,"./benchService":10,"./fighterService":11,"./httpService":12,"./screenService":14,"angular":22}],14:[function(require,module,exports){
+},{"./activeService":7,"./benchService":8,"./fighterService":9,"./httpService":10,"./screenService":12,"angular":20}],12:[function(require,module,exports){
 module.exports = function($location){
   this.gameState = $location.$$path.split("/")[1]
 }
 
-},{}],15:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var dragulaService = require('./service');
@@ -501,7 +492,7 @@ function register (angular) {
 
 module.exports = register;
 
-},{"./directive":16,"./service":18}],16:[function(require,module,exports){
+},{"./directive":14,"./service":16}],14:[function(require,module,exports){
 'use strict';
 
 var dragula = require('dragula');
@@ -559,7 +550,7 @@ function register (angular) {
 
 module.exports = register;
 
-},{"dragula":30}],17:[function(require,module,exports){
+},{"dragula":28}],15:[function(require,module,exports){
 'use strict';
 
 var atoa = require('atoa');
@@ -600,7 +591,7 @@ function replicateEvents (angular, bag, scope) {
 
 module.exports = replicateEvents;
 
-},{"atoa":23}],18:[function(require,module,exports){
+},{"atoa":21}],16:[function(require,module,exports){
 'use strict';
 
 var dragula = require('dragula');
@@ -716,7 +707,7 @@ function register (angular) {
 
 module.exports = register;
 
-},{"./replicate-events":17,"dragula":30}],19:[function(require,module,exports){
+},{"./replicate-events":15,"dragula":28}],17:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.5
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -1743,11 +1734,11 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-},{}],20:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 require('./angular-route');
 module.exports = 'ngRoute';
 
-},{"./angular-route":19}],21:[function(require,module,exports){
+},{"./angular-route":17}],19:[function(require,module,exports){
 /**
  * @license AngularJS v1.5.5
  * (c) 2010-2016 Google, Inc. http://angularjs.org
@@ -32616,14 +32607,14 @@ $provide.value("$locale", {
 })(window);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
-},{}],22:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 require('./angular');
 module.exports = angular;
 
-},{"./angular":21}],23:[function(require,module,exports){
+},{"./angular":19}],21:[function(require,module,exports){
 module.exports = function atoa (a, n) { return Array.prototype.slice.call(a, n); }
 
-},{}],24:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 var ticky = require('ticky');
@@ -32635,7 +32626,7 @@ module.exports = function debounce (fn, args, ctx) {
   });
 };
 
-},{"ticky":31}],25:[function(require,module,exports){
+},{"ticky":29}],23:[function(require,module,exports){
 'use strict';
 
 var atoa = require('atoa');
@@ -32691,7 +32682,7 @@ module.exports = function emitter (thing, options) {
   return thing;
 };
 
-},{"./debounce":24,"atoa":23}],26:[function(require,module,exports){
+},{"./debounce":22,"atoa":21}],24:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -32796,7 +32787,7 @@ function find (el, type, fn) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./eventmap":27,"custom-event":28}],27:[function(require,module,exports){
+},{"./eventmap":25,"custom-event":26}],25:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -32813,7 +32804,7 @@ for (eventname in global) {
 module.exports = eventmap;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],28:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 (function (global){
 
 var NativeCustomEvent = global.CustomEvent;
@@ -32865,7 +32856,7 @@ function CustomEvent (type, params) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],29:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 var cache = {};
@@ -32900,7 +32891,7 @@ module.exports = {
   rm: rmClass
 };
 
-},{}],30:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -33505,7 +33496,7 @@ function getCoord (coord, e) {
 module.exports = dragula;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./classes":29,"contra/emitter":25,"crossvent":26}],31:[function(require,module,exports){
+},{"./classes":27,"contra/emitter":23,"crossvent":24}],29:[function(require,module,exports){
 var si = typeof setImmediate === 'function', tick;
 if (si) {
   tick = function (fn) { setImmediate(fn); };
@@ -33514,4 +33505,4 @@ if (si) {
 }
 
 module.exports = tick;
-},{}]},{},[8]);
+},{}]},{},[6]);

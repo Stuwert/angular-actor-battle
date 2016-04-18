@@ -18,10 +18,6 @@ app
       templateUrl: 'partials/fighterselect.html',
       controller: 'FighterSelectController'
     })
-    .when('/moveselect', {
-      templateUrl: 'partials/moveselect.html',
-      controller: 'MoveSelectController'
-    })
     .when('/end', {
       templateUrl: 'partials/end.html',
       controller: 'EndScreenController'

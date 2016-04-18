@@ -1,4 +1,12 @@
-module.exports = function($scope, dragulaService, benchService, fighterService, $location){
+module.exports = function($scope, dragulaService, benchService, fighterService, $location, activeService){
+
+  $scope.currentTeam = activeService.activePlayer;
+
+  $scope.returnClass = activeService.returnClass;
+  $scope.player1Bench = benchService.player1Bench;
+  $scope.player2Bench = benchService.player2Bench;
+
+  $scope.changeCurrentPlayer = activeService.changeActivePlayer;
 
   dragulaService.options($scope, 'bag-one', {
       copy: true
